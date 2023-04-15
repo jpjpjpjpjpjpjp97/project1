@@ -1,6 +1,7 @@
 package com.una.project1.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 //import lombok.AllArgsConstructor;
 //import lombok.Data;
 //import lombok.NoArgsConstructor;
@@ -16,11 +17,12 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @NotBlank(message = "Name cannot be empty.")
     private String name;
-    @Column(nullable = false)
+    @NotBlank(message = "Username cannot be empty.")
     private String username;
-    @Column(nullable = false, length = 60)
+    @NotBlank(message = "Password cannot be empty.")
+    @Column(length = 60)
     private String passwordHash;
     @Column()
     private String phoneNumber;
@@ -106,6 +108,10 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 
     public Set<Payment> getPayments() {

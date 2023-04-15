@@ -6,24 +6,29 @@ import com.una.project1.model.Role;
 import com.una.project1.service.PaymentService;
 import com.una.project1.service.RoleService;
 import com.una.project1.service.UserService;
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
-@RestController
-@RequestMapping("")
+@Controller
+//@RequestMapping("")
 public class MainController {
+    private static final Logger log = LoggerFactory.getLogger(MainController.class);
 
     @Autowired
     UserService userService;
@@ -33,44 +38,48 @@ public class MainController {
     private PaymentService paymentService;
 
     @GetMapping("/")
-    public String mainPage(Authentication authentication){
+    public String mainPage(Authentication authentication, Model model){
         String username = "";
         Optional<User> user = null;
-        Collection<? extends GrantedAuthority> roles = null;
-        List<User> all_users = userService.findAll();
-        List<Role> all_roles = roleService.findAll();
-        List<Payment> all_payments = paymentService.findAll();
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<User> users = userService.findAll();
+        List<Role> roles = roleService.findAll();
+        List<Payment> payments = paymentService.findAll();
+        Object principal = authentication.getPrincipal();
         if (principal instanceof UserDetails) {
             username = ((UserDetails)principal).getUsername();
-            user = userService.getByUsername(((UserDetails)principal).getUsername());
-            roles = ((UserDetails)principal).getAuthorities();
+            user = userService.getByUsername(username);
         } else {
-            username = principal.toString();
+            username = "Not assigned";
         }
         assert user.isPresent();
-        return String.format("<html><body>" +
-                        "<div style='margin: 2rem; border: 2px solid black'><b>Username:</b> %s</div>" +
-                        "<div style='margin: 2rem; border: 2px solid black'><b>Details:</b> %s</div>" +
-                        "<div style='margin: 2rem; border: 2px solid black'><b>Authorities:</b> %s</div>" +
-                        "<div style='margin: 2rem; border: 2px solid black'><b>Authenticated:</b> %s</div>" +
-                        "<div style='margin: 2rem; border: 2px solid black'><b>Users:</b> %s</div>" +
-                        "<div style='margin: 2rem; border: 2px solid black'><b>Roles:</b> %s</div>" +
-                        "<div style='margin: 2rem; border: 2px solid black'><b>Payments:</b> %s</div>" +
-                        "</body></html>",
-            username,
-            authentication.getDetails().toString(),
-            authentication.getAuthorities().toString(),
-            authentication.isAuthenticated(),
-            all_users.toString(),
-            all_roles.toString(),
-            all_payments.toString()
-        );
+        model.addAttribute("user", user);
+        model.addAttribute("authentication", authentication);
+        model.addAttribute("users", users);
+        model.addAttribute("roles", roles);
+        model.addAttribute("payments", payments);
+        return "main";
     }
 
     @GetMapping("/auth/register")
-    public String registerPage(){
+    public String registerGetPage(Model model){
+        model.addAttribute("user", new User());
         return "auth/register";
+    }
+
+    @PostMapping("/auth/register")
+    public String registerPostPage(@Valid User user, BindingResult result, Model model, @RequestParam("password2") String password2){
+        if (!Objects.equals(user.getPasswordHash(), password2)){
+            result.rejectValue("passwordHash", "error.user", "Passwords must match.");
+        }
+        if (result.hasErrors()){
+            model.addAttribute("user", user);
+            return "auth/register";
+        }
+        Optional<Role> standardRole = roleService.getByName("StandardClient");
+        assert standardRole.isPresent();
+        user.addRole(standardRole.get());
+        userService.createUser(user);
+        return "redirect:/";
     }
     @GetMapping("/auth/login")
     public String loginPage(){

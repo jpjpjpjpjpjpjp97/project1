@@ -11,8 +11,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
@@ -22,6 +20,7 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
 
 import javax.sql.DataSource;
 
@@ -65,19 +64,16 @@ public class SecurityConfig {
         authProvider.setPasswordEncoder(encoder());
         return authProvider;
     }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests((requests) -> requests
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
-                .requestMatchers("/register", "/login").anonymous()
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/auth/register")).permitAll()
                 .anyRequest().authenticated()
             )
-            .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-            .logout(LogoutConfigurer::permitAll)
-//            .formLogin((form) -> form.permitAll().loginPage("/auth/login"))
-//            .logout((logout) -> logout.permitAll().logoutUrl("/auth/logout"))
+            .formLogin((form) -> form.permitAll().loginPage("/auth/login"))
+            .logout((logout) -> logout.permitAll().logoutUrl("/auth/logout"))
             .headers(headers -> headers.frameOptions().disable())
             .csrf(csrf -> csrf
                 .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")));;
