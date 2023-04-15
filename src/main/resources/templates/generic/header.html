@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<body>
+    <div th:fragment="header_element">
+        <span>My Navbar!</span>
+        <div sec:authorize="isAuthenticated()">
+            <a th:href="@{/auth/logout}">Log Out</a>
+        </div>
+    </div>
+</body>
+</html>

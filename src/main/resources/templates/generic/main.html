@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html
+    lang="en"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+      <div th:insert="~{generic/header :: header_element}"></div>
+      <div layout:fragment="maincontent">
+          <p>Default Content</p>
+      </div>
+      <div th:insert="~{generic/footer :: footer_element}"></div>
+    </body>
+</html>
