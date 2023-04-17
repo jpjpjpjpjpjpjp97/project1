@@ -20,7 +20,6 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
 
 import javax.sql.DataSource;
 
@@ -31,7 +30,7 @@ public class SecurityConfig {
     @Lazy
     @Resource
     @Autowired
-    UserServiceImplementation userServiceImplementation;
+    UserDetailsImplementation userDetailsImplementation;
     @Bean
     public DataSource dataSource() {
         return new EmbeddedDatabaseBuilder()
@@ -60,7 +59,7 @@ public class SecurityConfig {
     @Bean
     public DaoAuthenticationProvider authProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userServiceImplementation);
+        authProvider.setUserDetailsService(userDetailsImplementation);
         authProvider.setPasswordEncoder(encoder());
         return authProvider;
     }

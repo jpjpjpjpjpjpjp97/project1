@@ -129,14 +129,14 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", username='" + username + '\'' +
-                ", passwordHash='" + passwordHash + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                ", roles=" + roles +
-                ", payments=" + payments +
-                '}';
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", username='" + username + '\'' +
+            ", passwordHash='" + passwordHash + '\'' +
+            ", phoneNumber='" + phoneNumber + '\'' +
+            ", email='" + email + '\'' +
+            ", roles=" + roles +
+            ", payments=" + payments +
+        '}';
     }
 }

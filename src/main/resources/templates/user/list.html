@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{generic/main}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>User List</title>
+</head>
+<body>
+    <div layout:fragment="maincontent">
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Roles</th>
+            </tr>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}">None</td>
+                <td th:text="${user.username}">None</td>
+                <td th:text="${user.name}">None</td>
+                <td th:each="role, role_loop : ${user.roles}">
+                    <div th:text="${role.name} + ${!role_loop.last ? ' | ':''}">None</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

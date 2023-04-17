@@ -39,24 +39,6 @@ public class MainController {
 
     @GetMapping("/")
     public String mainPage(Authentication authentication, Model model){
-        String username = "";
-        Optional<User> user = null;
-        List<User> users = userService.findAll();
-        List<Role> roles = roleService.findAll();
-        List<Payment> payments = paymentService.findAll();
-        Object principal = authentication.getPrincipal();
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
-            user = userService.getByUsername(username);
-        } else {
-            username = "Not assigned";
-        }
-        assert user.isPresent();
-        model.addAttribute("user", user);
-        model.addAttribute("authentication", authentication);
-        model.addAttribute("users", users);
-        model.addAttribute("roles", roles);
-        model.addAttribute("payments", payments);
         return "main";
     }
 
@@ -91,8 +73,8 @@ public class MainController {
     }
 
     @PreAuthorize("hasAuthority('AdministratorClient')")
-    @GetMapping("/protected")
-    public String protectedPage(Authentication authentication){
+    @GetMapping("/auth/protected")
+    public String protectedPage(Authentication authentication, Model model){
         String username;
         authentication.getAuthorities();
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -101,6 +83,7 @@ public class MainController {
         } else {
             username = principal.toString();
         }
-        return "Authorized: "+ username;
+        model.addAttribute("username", username);
+        return "auth/protected";
     }
 }

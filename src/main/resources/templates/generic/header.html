@@ -7,6 +7,7 @@
     <div th:fragment="header_element">
         <span>My Navbar!</span>
         <div sec:authorize="isAuthenticated()">
+            <span>Logged in as: <span sec:authentication="name">Anonymous</span></span>
             <a th:href="@{/auth/logout}">Log Out</a>
         </div>
     </div>
