@@ -2,16 +2,10 @@ package com.una.project1.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-//import lombok.AllArgsConstructor;
-//import lombok.Data;
-//import lombok.NoArgsConstructor;
 
 import java.util.*;
 
-//@Data
 @Entity
-//@NoArgsConstructor
-//@AllArgsConstructor
 @Table(name = "profile")
 public class User {
     @Id
@@ -20,6 +14,7 @@ public class User {
     @NotBlank(message = "Name cannot be empty.")
     private String name;
     @NotBlank(message = "Username cannot be empty.")
+    @Column(unique = true, updatable = false)
     private String username;
     @NotBlank(message = "Password cannot be empty.")
     @Column(length = 60)
@@ -33,7 +28,7 @@ public class User {
         joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles = new HashSet<>();
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.REMOVE)
     private Set<Payment> payments = new HashSet<>();
 
     public User() {
@@ -52,6 +47,14 @@ public class User {
         this.passwordHash = passwordHash;
         this.roles = roles;
         this.payments = payments;
+    }
+
+    public User(String name, String username, String passwordHash, String phoneNumber, String email) {
+        this.name = name;
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
     }
 
     public Long getId() {

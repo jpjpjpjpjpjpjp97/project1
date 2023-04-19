@@ -14,11 +14,19 @@ public class RoleService {
     @Autowired
     private RoleRepository roleRepository;
     @Transactional
-    public Optional<Role> getByName(String name){
+    public Optional<Role> findByName(String name){
         return roleRepository.findByName(name);
     }
     @Transactional
     public List<Role> findAll() {
         return roleRepository.findAll();
+    }
+
+    public RoleRepository getRoleRepository() {
+        return roleRepository;
+    }
+
+    public void setRoleRepository(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
     }
 }

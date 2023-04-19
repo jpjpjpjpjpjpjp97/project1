@@ -1,14 +1,25 @@
 package com.una.project1.config;
 
+import com.una.project1.security_expression.CustomMethodSecurityExpressionHandler;
+import com.una.project1.security_expression.IsSelfOrAdminSecurityExpression;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.expression.method.ExpressionBasedPreInvocationAdvice;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
+import org.springframework.security.access.prepost.PreInvocationAuthorizationAdviceVoter;
+import org.springframework.security.access.vote.AffirmativeBased;
+import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -23,14 +34,43 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig {
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+public class SecurityConfig extends GlobalMethodSecurityConfiguration {
     @Lazy
     @Resource
     @Autowired
     UserDetailsImplementation userDetailsImplementation;
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    @Override
+    protected MethodSecurityExpressionHandler createExpressionHandler() {
+        var expressionHandler = new CustomMethodSecurityExpressionHandler();
+        expressionHandler.setApplicationContext(applicationContext);
+        //Block N°2  expressionHandler.setRoleHierarchy(roleHierarchy);
+        return expressionHandler;
+    }
+
+    @Override
+    protected AccessDecisionManager accessDecisionManager() {
+
+        List<AccessDecisionVoter<? extends Object>> decisionVoters = new ArrayList<>();
+
+        var expresionAdvice= new ExpressionBasedPreInvocationAdvice();
+        expresionAdvice.setExpressionHandler(getExpressionHandler());
+
+        decisionVoters.add(new PreInvocationAuthorizationAdviceVoter(expresionAdvice));
+        decisionVoters.add(new AuthenticatedVoter()); //It is necessary to add this one when we override the default AccessDecisionManager
+        /*Block N°3  Add the customized RoleVoter Bean if you have one
+          decisionVoters.add(roleVoter);
+          */
+        return new AffirmativeBased(decisionVoters);
+    }
     @Bean
     public DataSource dataSource() {
         return new EmbeddedDatabaseBuilder()
@@ -78,4 +118,6 @@ public class SecurityConfig {
                 .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")));;
         return http.build();
     }
+
+
 }

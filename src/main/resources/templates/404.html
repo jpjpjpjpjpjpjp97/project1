@@ -5,10 +5,12 @@
         layout:decorate="~{generic/main}"
 >
 <head>
-    <meta charset="UTF-8">
-    <title th:text="Create ${user ? user.name : 'new user'}"></title>
+  <meta charset="UTF-8">
+  <title>Main Page</title>
 </head>
 <body>
-
+<div layout:fragment="maincontent">
+  <h5>Page not found (404)</h5>
+</div>
 </body>
 </html>

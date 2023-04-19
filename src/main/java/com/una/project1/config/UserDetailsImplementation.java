@@ -30,7 +30,7 @@ public class UserDetailsImplementation implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService
-            .getByUsername(username)
+            .findByUsername(username)
             .orElseThrow(() -> new UsernameNotFoundException(username + " not found"));
         Collection<? extends GrantedAuthority> authorities = this.getAuthorities(user);
         return new org.springframework.security.core.userdetails.User(

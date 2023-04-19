@@ -1,39 +1,46 @@
 package com.una.project1.model;
 
 import jakarta.persistence.*;
-//import lombok.AllArgsConstructor;
-//import lombok.Data;
-//import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
 
-//@Data
 @Entity
-//@NoArgsConstructor
-//@AllArgsConstructor
 @Table(name = "payment")
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @NotBlank(message = "Card number is required.")
+    @Column()
     private String number;
-    @Column(nullable = false)
-    private String name;
-    @Column(nullable = false)
+    @NotBlank(message = "Card name is required.")
+    @Column()
+    private String owner;
+    @NotBlank(message = "Card expiration date is required.")
+    @Column()
     private String expirationDate;
-    @Column(nullable = false)
+    @NotBlank(message = "Card security code is required.")
+    @Column()
     private String securityCode;
-    @Column(nullable = false)
+    @NotBlank(message = "Billing address is required.")
+    @Column()
     private String billingAddress;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id", referencedColumnName = "id", nullable=false, updatable=false)
+    @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;
 
     public Payment() {
 
     }
-    public Payment(String number, String name, String expirationDate, String securityCode, String billingAddress, User user) {
+    public Payment(String number, String owner, String expirationDate, String securityCode, String billingAddress) {
         this.number = number;
-        this.name = name;
+        this.owner = owner;
+        this.expirationDate = expirationDate;
+        this.securityCode = securityCode;
+        this.billingAddress = billingAddress;
+    }
+    public Payment(String number, String owner, String expirationDate, String securityCode, String billingAddress, User user) {
+        this.number = number;
+        this.owner = owner;
         this.expirationDate = expirationDate;
         this.securityCode = securityCode;
         this.billingAddress = billingAddress;
@@ -56,12 +63,12 @@ public class Payment {
         this.number = number;
     }
 
-    public String getName() {
-        return name;
+    public String getOwner() {
+        return owner;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     public String getExpirationDate() {
@@ -101,7 +108,7 @@ public class Payment {
         return "Payment{" +
                 "id=" + id +
                 ", number='" + number + '\'' +
-                ", name='" + name + '\'' +
+                ", owner='" + owner + '\'' +
                 ", expirationDate='" + expirationDate + '\'' +
                 ", securityCode='" + securityCode + '\'' +
                 '}';
