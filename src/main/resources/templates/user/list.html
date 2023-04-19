@@ -10,22 +10,31 @@
 </head>
 <body>
     <div layout:fragment="maincontent">
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Name</th>
-                <th>Roles</th>
-            </tr>
-            <tr th:each="user : ${users}">
-                <td th:text="${user.id}">None</td>
-                <td th:text="${user.username}">None</td>
-                <td th:text="${user.name}">None</td>
-                <td th:each="role, role_loop : ${user.roles}">
-                    <div th:text="${role.name} + ${!role_loop.last ? ' | ':''}">None</div>
-                </td>
-            </tr>
-        </table>
+        <div>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>Roles</th>
+                    <th>Delete</th>
+                </tr>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.id}">None</td>
+                    <td><a th:text="${user.username}" th:href="@{/user/{username}(username = ${user.username})}">None</a></td>
+                    <td th:text="${user.name}">None</td>
+                    <td th:each="role, role_loop : ${user.roles}">
+                        <div th:text="${role.name} + ${!role_loop.last ? ' | ':''}">None</div>
+                    </td>
+                    <td>
+                        <form th:method="Post" th:action="@{/user/{username}/delete(username = ${user.username})}">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div th:insert="~{user/create_form :: user_form}"></div>
     </div>
 </body>
 </html>
