@@ -1,0 +1,30 @@
+:root {
+    --color-primario: #4a4a4a;
+    --color-secundario: #ffaf30;
+    --color-terciario: #ffffff;
+}
+
+/* Utilizar una fuente coherente */
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* Utilizar el espaciado de manera uniforme */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Utilizar efectos de hover */
+button {
+    background-color: var(--color-primario);
+    color: var(--color-terciario);
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: var(--color-secundario);
+}
