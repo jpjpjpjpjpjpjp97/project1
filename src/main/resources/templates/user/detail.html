@@ -6,9 +6,40 @@
 >
 <head>
     <meta charset="UTF-8">
-    <title>User Detail</title>
+    <title th:text="'User Detail' + ${user.username}">User Detail</title>
 </head>
 <body>
-
+    <div layout:fragment="maincontent">
+        <ul>
+            <li>
+                <form th:method="Post" th:action="@{/user/{username}/delete(username = ${user.username})}">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+            <li>
+                <a th:href="@{/user/{username}/change_password(username = ${user.username})}">
+                    <button>Change Password</button>
+                </a>
+            </li>
+        </ul>
+        <div th:object="${user}">
+            <p>Username: <span th:text="*{username}"></span></p>
+            <p>Name: <span th:text="*{name}"></span></p>
+            <p>Phone Number: <span th:text="*{phoneNumber}"></span></p>
+            <p>Email: <span th:text="*{email}"></span></p>
+            <p>Payments:</p>
+            <div th:each="payment : *{payments}">
+                <p th:text="'Owner: '+${payment.owner}"></p>
+                <p th:text="'Number: '+${payment.number}"></p>
+                <p th:text="'Expiration Date: '+${payment.expirationDate}"></p>
+                <p th:text="'Billing Address: '+${payment.billingAddress}"></p>
+            </div>
+            <p>Roles:</p>
+            <ul>
+                <li th:each="role : *{roles}" th:text="${role.name}"></li>
+            </ul>
+        </div>
+        <div th:insert="~{user/update_form :: user_form}"></div>
+    </div>
 </body>
 </html>

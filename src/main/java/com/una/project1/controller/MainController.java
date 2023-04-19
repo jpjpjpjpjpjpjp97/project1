@@ -2,7 +2,7 @@ package com.una.project1.controller;
 
 import com.una.project1.model.Payment;
 import com.una.project1.model.User;
-import com.una.project1.model.Role;
+import com.una.project1.form.UserRegisterHelper;
 import com.una.project1.service.PaymentService;
 import com.una.project1.service.RoleService;
 import com.una.project1.service.UserService;
@@ -12,21 +12,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
-
 @Controller
-//@RequestMapping("")
 public class MainController {
     private static final Logger log = LoggerFactory.getLogger(MainController.class);
 
@@ -38,52 +29,57 @@ public class MainController {
     private PaymentService paymentService;
 
     @GetMapping("/")
-    public String mainPage(Authentication authentication, Model model){
+    public String main(Authentication authentication, Model model){
         return "main";
     }
-
     @GetMapping("/auth/register")
-    public String registerGetPage(Model model){
-        model.addAttribute("user", new User());
+    public String registerGet(Model model){
+        model.addAttribute("userRegisterHelper", new UserRegisterHelper());
         return "auth/register";
     }
-
     @PostMapping("/auth/register")
-    public String registerPostPage(@Valid User user, BindingResult result, Model model, @RequestParam("password2") String password2){
-        if (!Objects.equals(user.getPasswordHash(), password2)){
-            result.rejectValue("passwordHash", "error.user", "Passwords must match.");
-        }
+    public String registerPost(
+            @Valid UserRegisterHelper userRegisterHelper,
+            BindingResult result,
+            Model model
+    ) {
+        User user = new User(
+            userRegisterHelper.getName(),
+            userRegisterHelper.getUsername(),
+            userRegisterHelper.getPasswordHash(),
+            userRegisterHelper.getPhoneNumber(),
+            userRegisterHelper.getEmail()
+        );
+        Payment payment = new Payment(
+                userRegisterHelper.getNumber(),
+                userRegisterHelper.getOwner(),
+                userRegisterHelper.getExpirationDate(),
+                userRegisterHelper.getSecurityCode(),
+                userRegisterHelper.getBillingAddress()
+        );
+        result = userService.validateCreation(user, userRegisterHelper.getPassword2(), result, "create");
+        result = paymentService.validateCreation(payment, result);
         if (result.hasErrors()){
-            model.addAttribute("user", user);
+            model.addAttribute("userRegisterHelper", userRegisterHelper);
             return "auth/register";
         }
-        Optional<Role> standardRole = roleService.getByName("StandardClient");
-        assert standardRole.isPresent();
-        user.addRole(standardRole.get());
-        userService.createUser(user);
+        user = userService.assignRole(user, "StandardClient");
+        user = userService.createUser(user);
+        payment = paymentService.assignUser(payment, user);
+        payment = paymentService.savePayment(payment);
         return "redirect:/";
     }
     @GetMapping("/auth/login")
-    public String loginPage(){
+    public String login(){
         return "auth/login";
     }
     @GetMapping("/auth/logout")
-    public String logoutPage(){
+    public String logout(){
         return "auth/logout";
     }
-
     @PreAuthorize("hasAuthority('AdministratorClient')")
     @GetMapping("/auth/protected")
     public String protectedPage(Authentication authentication, Model model){
-        String username;
-        authentication.getAuthorities();
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
-        model.addAttribute("username", username);
         return "auth/protected";
     }
 }
