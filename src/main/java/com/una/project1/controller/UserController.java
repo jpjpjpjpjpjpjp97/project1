@@ -30,7 +30,9 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('AdministratorClient')")
     @GetMapping("")
-    public String userList(Model model){
+    public String userList(
+            Model model
+    ){
         List<User> users = userService.findAll();
         List<Role> roles = roleService.findAll();
         model.addAttribute("roles", roles);
@@ -62,7 +64,10 @@ public class UserController {
     }
     @PreAuthorize("isSelfOrAdmin(#username)")
     @GetMapping("/{username}")
-    public String userDetail(Model model, @PathVariable("username") String username){
+    public String userDetail(
+            Model model,
+            @PathVariable("username") String username
+    ){
         Optional<User> user = userService.findByUsername(username);
         if (!user.isPresent()){
             return "404";
@@ -93,7 +98,10 @@ public class UserController {
     }
     @PreAuthorize("isSelfOrAdmin(#username)")
     @GetMapping("/{username}/change_password")
-    public String userPasswordChange(Model model, @PathVariable("username") String username){
+    public String userPasswordChange(
+            Model model,
+            @PathVariable("username") String username
+    ){
         Optional<User> user = userService.findByUsername(username);
         if (!user.isPresent()){
             return "404";
@@ -110,7 +118,7 @@ public class UserController {
             BindingResult result,
             @PathVariable("username") String username,
             HttpSession session
-        ){
+    ){
         Optional<User> existingUser = userService.findByUsername(username);
         if (!existingUser.isPresent()){
             return "404";

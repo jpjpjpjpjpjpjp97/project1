@@ -5,13 +5,19 @@
 >
 <body>
     <div th:fragment="header_element">
-        <span>My Navbar!</span>
-        <div sec:authorize="hasAuthority('AdministratorClient')">
-          This content is only shown to administrators.
-        </div>
         <div sec:authorize="isAuthenticated()">
             <span>Logged in as: <span sec:authentication="name">Anonymous</span></span>
-            <a th:href="@{/auth/logout}">Log Out</a>
+            <div>
+                <a th:href="@{/}">Dashboard</a>
+                <span sec:authorize="hasAuthority('StandardClient')">
+                    <a th:href="@{/payment}">Payments</a>
+                </span>
+                <span sec:authorize="hasAuthority('AdministratorClient')">
+                    <a th:href="@{/user}">Users</a>
+                </span>
+                <a th:href="@{/user/{username}(username=${#authentication.name})}">Profile</a>
+                <a th:href="@{/auth/logout}">Log Out</a>
+            </div>
         </div>
     </div>
 </body>

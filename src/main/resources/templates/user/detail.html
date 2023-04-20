@@ -27,16 +27,18 @@
             <p>Name: <span th:text="*{name}"></span></p>
             <p>Phone Number: <span th:text="*{phoneNumber}"></span></p>
             <p>Email: <span th:text="*{email}"></span></p>
-            <p>Payments:</p>
-            <div th:each="payment : *{payments}">
-                <p th:text="'Owner: '+${payment.owner}"></p>
-                <p th:text="'Number: '+${payment.number}"></p>
-                <p th:text="'Expiration Date: '+${payment.expirationDate}"></p>
-                <p th:text="'Billing Address: '+${payment.billingAddress}"></p>
+            <div th:if="*{#lists.size(payments) != 0}"></div>
+                <p>Payments:</p>
+                <div th:each="payment : *{payments}">
+                    <p th:text="'Owner: '+${payment.owner}"></p>
+                    <p th:text="'Number: '+${payment.getSafeNumber}"></p>
+                    <p th:text="'Expiration Date: '+${payment.expirationDate}"></p>
+                    <p th:text="'Billing Address: '+${payment.billingAddress}"></p>
+                </div>
             </div>
             <p>Roles:</p>
             <ul>
-                <li th:each="role : *{roles}" th:text="${role.name}"></li>
+                <li th:each="role : *{user.roles}" th:text="${role.name}"></li>
             </ul>
         </div>
         <div th:insert="~{user/update_form :: user_form}"></div>

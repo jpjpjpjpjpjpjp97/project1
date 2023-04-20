@@ -111,7 +111,10 @@ public class SecurityConfig extends GlobalMethodSecurityConfiguration {
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/auth/register")).permitAll()
                 .anyRequest().authenticated()
             )
-            .formLogin((form) -> form.permitAll().loginPage("/auth/login"))
+            .formLogin((form) -> form.permitAll()
+                    .loginPage("/auth/login")
+                    .loginProcessingUrl("/auth/login")
+                    .defaultSuccessUrl("/", true))
             .logout((logout) -> logout.permitAll().logoutUrl("/auth/logout"))
             .headers(headers -> headers.frameOptions().disable())
             .csrf(csrf -> csrf

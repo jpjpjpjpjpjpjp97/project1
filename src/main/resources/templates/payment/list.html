@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{generic/main}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Payment List</title>
+</head>
+<body>
+<div layout:fragment="maincontent">
+    <div>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Number</th>
+                <th>Owner</th>
+                <th>Expiration Date</th>
+                <th>Billing Address</th>
+                <th>Delete</th>
+            </tr>
+            <tr th:each="payment : ${payments}">
+                <td th:text="${payment.id}">None</td>
+                <td><a th:text="${payment.getSafeNumber}" th:href="@{/payment/{payment}(payment = ${payment.id})}">None</a></td>
+                <td th:text="${payment.owner}">None</td>
+                <td th:text="${payment.expirationDate}">None</td>
+                <td th:text="${payment.billingAddress}">None</td>
+                <td>
+                    <form th:method="Post" th:action="@{/payment/{payment}/delete(payment = ${payment.id})}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div th:insert="~{payment/form :: payment_form}"></div>
+</div>
+</body>
+</html>

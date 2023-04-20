@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{generic/main}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Payment List</title>
+</head>
+<body>
+<div th:fragment="payment_form">
+    <form method="post" th:action="@{${payment.id != null ? '/payment/'+payment.id : '/payment' }}" th:object="${payment}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <div>
+            <label for="number">Card Number: </label>
+            <input id="number" name="number" type="text" th:field="*{number}"/>
+            <ul>
+                <li th:each="err : ${#fields.errors('number')}" th:text="${err}" class="error"></li>
+            </ul>
+        </div>
+
+        <div>
+            <label for="owner">Card Name: </label>
+            <input id="owner" name="owner" type="text" th:field="*{owner}"/>
+            <ul>
+                <li th:each="err : ${#fields.errors('owner')}" th:text="${err}" class="error"></li>
+            </ul>
+        </div>
+        <div>
+            <label for="expirationDate">Expiration Date: </label>
+            <input id="expirationDate" name="expirationDate" type="text" th:field="*{expirationDate}"/>
+            <ul>
+                <li th:each="err : ${#fields.errors('expirationDate')}" th:text="${err}" class="error"></li>
+            </ul>
+        </div>
+        <div>
+            <label for="securityCode">Security Code: </label>
+            <input id="securityCode" name="securityCode" type="text" th:field="*{securityCode}"/>
+            <ul>
+                <li th:each="err : ${#fields.errors('securityCode')}" th:text="${err}" class="error"></li>
+            </ul>
+        </div>
+        <div>
+            <label for="billingAddress">Billing Address: </label>
+            <textarea id="billingAddress" name="billingAddress" th:field="*{billingAddress}"></textarea>
+            <ul>
+                <li th:each="err : ${#fields.errors('billingAddress')}" th:text="${err}" class="error"></li>
+            </ul>
+        </div>
+        <div>
+            <input type="submit" th:value="${payment.id != null ? 'Update Payment' : 'Create Payment'}">
+        </div>
+    </form>
+</div>
+</body>
+</html>

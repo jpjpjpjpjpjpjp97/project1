@@ -1,7 +1,9 @@
 package com.una.project1.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "payment")
@@ -10,6 +12,7 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank(message = "Card number is required.")
+    @Size(min = 8, max = 40, message = "Card number must be between 8 and 40 numbers long.")
     @Column()
     private String number;
     @NotBlank(message = "Card name is required.")
@@ -57,6 +60,10 @@ public class Payment {
 
     public String getNumber() {
         return number;
+    }
+    public String getSafeNumber() {
+        String safeNumber = "*".repeat(number.length()-4) + number.substring(number.length()-4);
+        return safeNumber;
     }
 
     public void setNumber(String number) {
