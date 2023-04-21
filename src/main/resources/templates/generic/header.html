@@ -33,7 +33,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent2" sec:authorize="isAuthenticated()">
                     <ul class="navbar-nav justify-content-between me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/user/{username}(username=${#authentication.name})}" sec:authentication="name">Profile</a>
+                            <a class="nav-link fs-6 text-capitalize" th:href="@{/user/{username}(username=${#authentication.name})}" sec:authentication="name">Profile</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/auth/logout}">Log Out</a>

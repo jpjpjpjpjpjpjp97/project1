@@ -39,12 +39,16 @@ public class User {
         this.username = username;
         this.name = name;
         this.passwordHash = passwordHash;
+        this.phoneNumber = "";
+        this.email = "";
         this.roles = roles;
     }
     public User(String username, String name, String passwordHash, Set<Role> roles, Set<Payment> payments) {
         this.username = username;
         this.name = name;
         this.passwordHash = passwordHash;
+        this.phoneNumber = "";
+        this.email = "";
         this.roles = roles;
         this.payments = payments;
     }
