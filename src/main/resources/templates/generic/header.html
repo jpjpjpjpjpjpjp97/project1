@@ -5,20 +5,43 @@
 >
 <body>
     <div th:fragment="header_element">
-        <div sec:authorize="isAuthenticated()">
-            <span>Logged in as: <span sec:authentication="name">Anonymous</span></span>
-            <div>
-                <a th:href="@{/}">Dashboard</a>
-                <span sec:authorize="hasAuthority('StandardClient')">
-                    <a th:href="@{/payment}">Payments</a>
-                </span>
-                <span sec:authorize="hasAuthority('AdministratorClient')">
-                    <a th:href="@{/user}">Users</a>
-                </span>
-                <a th:href="@{/user/{username}(username=${#authentication.name})}">Profile</a>
-                <a th:href="@{/auth/logout}">Log Out</a>
+        <nav class="navbar navbar-light bg-navbar navbar-expand-lg p-3 shadow-sm">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Auto-Insurance</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent" sec:authorize="isAuthenticated()">
+                    <ul class="navbar-nav justify-content-between me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/}">Home</a>
+                        </li>
+                        <span sec:authorize="hasAuthority('StandardClient')">
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/payment}">Payments</a>
+                            </li>
+                        </span>
+                        <span sec:authorize="hasAuthority('AdministratorClient')">
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/user}">Users</a>
+                            </li>
+                        </span>
+                    </ul>
+                </div>
             </div>
-        </div>
+            <div class="row col-auto justify-content-end">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent2" sec:authorize="isAuthenticated()">
+                    <ul class="navbar-nav justify-content-between me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/user/{username}(username=${#authentication.name})}" sec:authentication="name">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/auth/logout}">Log Out</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
     </div>
 </body>
 </html>

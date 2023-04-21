@@ -109,6 +109,8 @@ public class SecurityConfig extends GlobalMethodSecurityConfiguration {
             .authorizeHttpRequests((requests) -> requests
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/auth/register")).permitAll()
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/CSS/**")).permitAll()
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/js/**")).permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin((form) -> form.permitAll()
