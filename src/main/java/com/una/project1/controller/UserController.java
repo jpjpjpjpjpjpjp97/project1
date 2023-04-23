@@ -89,7 +89,8 @@ public class UserController {
         }
         if (result.hasErrors()){
             model.addAttribute("user",existingUser.get());
-            model.addAttribute("userData", userData);
+            model.addAttribute("userData", userData)
+            ;
             return "user/detail";
         }
         userService.updateUser(existingUser.get(), userData);

@@ -3,20 +3,22 @@ package com.una.project1.preload;
 
 import com.una.project1.model.Payment;
 import com.una.project1.model.PaymentSchedule;
-import com.una.project1.model.User;
 import com.una.project1.model.Role;
+import com.una.project1.model.User;
+import com.una.project1.model.Vehicle;
 import com.una.project1.repository.PaymentRepository;
 import com.una.project1.repository.PaymentScheduleRepository;
 import com.una.project1.repository.RoleRepository;
 import com.una.project1.repository.UserRepository;
+import com.una.project1.repository.VehicleRepository;
 import com.una.project1.service.UserService;
+import com.una.project1.service.VehicleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
 import java.util.Set;
@@ -27,12 +29,15 @@ class LoadData {
 
     @Autowired
     private UserService userService;
+    private VehicleService vehicleService;
     @Bean
     CommandLineRunner initDatabase(
             UserRepository userRepository,
             RoleRepository roleRepository,
             PaymentRepository paymentRepository,
-            PaymentScheduleRepository paymentScheduleRepository
+            PaymentScheduleRepository paymentScheduleRepository,
+            VehicleRepository VehicleRepository
+
     ) {
         return args -> {
             log.info("Loading Roles...");
@@ -58,6 +63,18 @@ class LoadData {
             paymentScheduleRepository.save(quarterlyPayment);
             paymentScheduleRepository.save(biannualPayment);
             paymentScheduleRepository.save(yearlyPayment);
+            log.info("Loading Vehicles...");
+            Vehicle vehicle1 = new Vehicle(null, "Toyota", "Corolla");
+            Vehicle vehicle2 = new Vehicle(null, "Honda", "Civic");
+            Vehicle vehicle3 = new Vehicle(null, "Ford", "Mustang");
+            Vehicle vehicle4 = new Vehicle(null, "Nissan", "Sentra");
+            Vehicle vehicle5 = new Vehicle(null, "Chevrolet", "Camaro");
+            VehicleRepository.save(vehicle1);
+            VehicleRepository.save(vehicle2);
+            VehicleRepository.save(vehicle3);
+            VehicleRepository.save(vehicle4);
+            VehicleRepository.save(vehicle5);
+
         };
     }
 }
