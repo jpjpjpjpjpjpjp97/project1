@@ -2,6 +2,7 @@ package com.una.project1.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -18,15 +19,15 @@ public class Insurance {
     @Column()
     private String numberPlate;
 
-    @NotBlank(message = "A year is required.")
+    @NotNull(message = "A year is required.")
     @Column()
-    private int year;
+    private int carYear;
 
-    @NotBlank(message = "A valuation is required.")
+    @NotNull(message = "A valuation is required.")
     @Column()
     private int valuation;
 
-    @NotBlank(message = "A date is required.")
+    @NotNull(message = "A date is required.")
     @Column()
     private Date startDate;
     //Puede ser la clase que llama a date
@@ -56,10 +57,23 @@ public class Insurance {
     public Insurance() {
     }
 
-    public Insurance(Long id, String numberPlate, int year, int valuation, Date startDate, Payment payment, PaymentSchedule paymentSchedule, User client, Vehicle vehicle, Set<Coverage> coverages) {
-        this.id = id;
+
+    public Insurance(String numberPlate, int carYear, int valuation, Date startDate, Payment payment, PaymentSchedule paymentSchedule, User client, Vehicle vehicle) {
         this.numberPlate = numberPlate;
-        this.year = year;
+        this.carYear = carYear;
+        this.valuation = valuation;
+        this.startDate = startDate;
+        this.payment = payment;
+        this.paymentSchedule = paymentSchedule;
+        this.client = client;
+        this.vehicle = vehicle;
+    }
+
+    // Year es una palabra reservada
+
+    public Insurance(String numberPlate, int carYear, int valuation, Date startDate, Payment payment, PaymentSchedule paymentSchedule, User client, Vehicle vehicle, Set<Coverage> coverages) {
+        this.numberPlate = numberPlate;
+        this.carYear = carYear;
         this.valuation = valuation;
         this.startDate = startDate;
         this.payment = payment;
@@ -86,12 +100,12 @@ public class Insurance {
         this.numberPlate = numberPlate;
     }
 
-    public int getYear() {
-        return year;
+    public int getCarYear() {
+        return carYear;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setCarYear(int carYear) {
+        this.carYear = carYear;
     }
 
     public int getValuation() {

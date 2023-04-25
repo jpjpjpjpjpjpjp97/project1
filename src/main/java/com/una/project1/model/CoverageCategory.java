@@ -12,21 +12,22 @@ import java.util.Set;
 public class CoverageCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @NotBlank(message = "Brand cannot be empty.")
-    String name;
+    private String name;
     @NotBlank(message = "Model cannot be empty.")
-    String description;
-/*
-    @ManyToMany(mappedBy = "categories")
-    private Set<Coverage> coverages = new HashSet<>();
-  */
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "coverage", cascade = CascadeType.REMOVE)
-    private Set<Coverage> coverage = new HashSet<>();
+    private String description;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "coverageCategory", cascade = CascadeType.REMOVE)
+    private Set<Coverage> coverages = new HashSet<>();
 
     public CoverageCategory(Long id, String name, String description) {
         this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
+    public CoverageCategory(String name, String description) {
         this.name = name;
         this.description = description;
     }

@@ -2,6 +2,8 @@ package com.una.project1.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -13,15 +15,15 @@ public class Coverage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
     @NotBlank(message = "Name cannot be empty.")
-    String name;
-    @NotBlank(message = "Name cannot be empty.")
-    String description;
-    @NotBlank(message = "Name cannot be empty.")
-    Long minimumPrice;
-
-    Long valuationPercentagePrice;
+    private String name;
+    @NotBlank(message = "Description cannot be empty.")
+    private String description;
+    @NotNull(message = "Minimum price cannot be empty.")
+    private Double minimumPrice;
+    @NotNull(message = "Percentage price cannot be empty.")
+    private Double valuationPercentagePrice;
 
     /*
     @ManyToMany
@@ -34,16 +36,21 @@ public class Coverage {
     @JoinColumn(name="coverageCategory_id", referencedColumnName = "id")
     private CoverageCategory coverageCategory;
 
-
-
-
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "coverages")
     private Set<Insurance> insurances = new HashSet<>();
 
     public Coverage() {
     }
 
-    public Coverage(long id, String name, String description, Long minimumPrice, Long valuationPercentagePrice, CoverageCategory coverageCategory, Set<Insurance> insurances) {
+    public Coverage(String name, String description, Double minimumPrice, Double valuationPercentagePrice, CoverageCategory coverageCategory) {
+        this.name = name;
+        this.description = description;
+        this.minimumPrice = minimumPrice;
+        this.valuationPercentagePrice = valuationPercentagePrice;
+        this.coverageCategory = coverageCategory;
+    }
+
+    public Coverage(long id, String name, String description, Double minimumPrice, Double valuationPercentagePrice, CoverageCategory coverageCategory, Set<Insurance> insurances) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -77,19 +84,19 @@ public class Coverage {
         this.description = description;
     }
 
-    public Long getMinimumPrice() {
+    public Double getMinimumPrice() {
         return minimumPrice;
     }
 
-    public void setMinimumPrice(Long minimumPrice) {
+    public void setMinimumPrice(Double minimumPrice) {
         this.minimumPrice = minimumPrice;
     }
 
-    public Long getValuationPercentagePrice() {
+    public Double getValuationPercentagePrice() {
         return valuationPercentagePrice;
     }
 
-    public void setValuationPercentagePrice(Long valuationPercentagePrice) {
+    public void setValuationPercentagePrice(Double valuationPercentagePrice) {
         this.valuationPercentagePrice = valuationPercentagePrice;
     }
 

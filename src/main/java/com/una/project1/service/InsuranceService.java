@@ -24,8 +24,8 @@ public class InsuranceService {
     }
 
     @Transactional
-    public Optional<Insurance> findByName(String numberPlate) {
-        return insuranceRepository.findByName(numberPlate);
+    public Optional<Insurance> findByNumberPlate(String numberPlate) {
+        return insuranceRepository.findByNumberPlate(numberPlate);
     }
 
 

@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface InsuranceRepository extends JpaRepository<Insurance, Long> {
-    Optional<Insurance> findByName(String numberPlate);
+    Optional<Insurance> findByNumberPlate(String numberPlate);
     Optional<Insurance> findById(Long id);}
