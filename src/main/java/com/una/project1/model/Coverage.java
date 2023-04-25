@@ -2,45 +2,62 @@ package com.una.project1.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "coveage")
+@Table(name = "coverage")
 public class Coverage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
     @NotBlank(message = "Name cannot be empty.")
-    String name;
-    @NotBlank(message = "Name cannot be empty.")
-    String description;
-    @NotBlank(message = "Name cannot be empty.")
-    Long minimumPrice;
+    private String name;
+    @NotBlank(message = "Description cannot be empty.")
+    private String description;
+    @NotNull(message = "Minimum price cannot be empty.")
+    private Double minimumPrice;
+    @NotNull(message = "Percentage price cannot be empty.")
+    private Double valuationPercentagePrice;
 
-    Long valuationPercentagePrice;
+    /*
     @ManyToMany
-    @JoinTable(name = "coverage_coveragecategory",
+    @JoinTable(name = "coverage_coverageCategory",
             joinColumns = @JoinColumn(name = "coverage_id"),
             inverseJoinColumns = @JoinColumn(name = "coveragecategory_id"))
     private Set<CoverageCategory> categories = new HashSet<>();
+*/
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="coverageCategory_id", referencedColumnName = "id")
+    private CoverageCategory coverageCategory;
 
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "coverages")
+    private Set<Insurance> insurances = new HashSet<>();
 
-    public Coverage(long id, String name, String description, Long minimumPrice, Long valuationPercentagePrice, Set<CoverageCategory> categories) {
+    public Coverage() {
+    }
+
+    public Coverage(String name, String description, Double minimumPrice, Double valuationPercentagePrice, CoverageCategory coverageCategory) {
+        this.name = name;
+        this.description = description;
+        this.minimumPrice = minimumPrice;
+        this.valuationPercentagePrice = valuationPercentagePrice;
+        this.coverageCategory = coverageCategory;
+    }
+
+    public Coverage(long id, String name, String description, Double minimumPrice, Double valuationPercentagePrice, CoverageCategory coverageCategory, Set<Insurance> insurances) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.minimumPrice = minimumPrice;
         this.valuationPercentagePrice = valuationPercentagePrice;
-        this.categories = categories;
-    }
-
-
-    public Coverage() {
-
+        this.coverageCategory = coverageCategory;
+        this.insurances = insurances;
     }
 
     public long getId() {
@@ -67,53 +84,41 @@ public class Coverage {
         this.description = description;
     }
 
-    public Long getMinimumPrice() {
+    public Double getMinimumPrice() {
         return minimumPrice;
     }
 
-    public void setMinimumPrice(Long minimumPrice) {
+    public void setMinimumPrice(Double minimumPrice) {
         this.minimumPrice = minimumPrice;
     }
 
-    public Long getValuationPercentagePrice() {
+    public Double getValuationPercentagePrice() {
         return valuationPercentagePrice;
     }
 
-    public void setValuationPercentagePrice(Long valuationPercentagePrice) {
+    public void setValuationPercentagePrice(Double valuationPercentagePrice) {
         this.valuationPercentagePrice = valuationPercentagePrice;
     }
 
-    public Set<CoverageCategory> getCategories() {
-        return categories;
+    public CoverageCategory getCoverageCategory() {
+        return coverageCategory;
     }
 
-    public void setCategories(Set<CoverageCategory> categories) {
-        this.categories = categories;
+    public void setCoverageCategory(CoverageCategory coverageCategory) {
+        this.coverageCategory = coverageCategory;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Coverage coverage)) return false;
-        return getId() == coverage.getId() && Objects.equals(getName(), coverage.getName()) && Objects.equals(getDescription(), coverage.getDescription()) && Objects.equals(getMinimumPrice(), coverage.getMinimumPrice()) && Objects.equals(getValuationPercentagePrice(), coverage.getValuationPercentagePrice()) && Objects.equals(getCategories(), coverage.getCategories());
+    public Set<Insurance> getInsurances() {
+        return insurances;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName(), getDescription(), getMinimumPrice(), getValuationPercentagePrice(), getCategories());
+    public void setInsurances(Set<Insurance> insurances) {
+        this.insurances = insurances;
     }
 
-    @Override
-    public String toString() {
-        return "Coverage{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", minimumPrice=" + minimumPrice +
-                ", valuationPercentagePrice=" + valuationPercentagePrice +
-                ", categories=" + categories +
-                '}';
-    }
+
+
+
 
 
 

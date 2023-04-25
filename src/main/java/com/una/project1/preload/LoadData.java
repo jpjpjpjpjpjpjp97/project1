@@ -1,16 +1,8 @@
 package com.una.project1.preload;
 
 
-import com.una.project1.model.Payment;
-import com.una.project1.model.PaymentSchedule;
-import com.una.project1.model.Role;
-import com.una.project1.model.User;
-import com.una.project1.model.Vehicle;
-import com.una.project1.repository.PaymentRepository;
-import com.una.project1.repository.PaymentScheduleRepository;
-import com.una.project1.repository.RoleRepository;
-import com.una.project1.repository.UserRepository;
-import com.una.project1.repository.VehicleRepository;
+import com.una.project1.model.*;
+import com.una.project1.repository.*;
 import com.una.project1.service.UserService;
 import com.una.project1.service.VehicleService;
 import org.slf4j.Logger;
@@ -21,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.Set;
 
 @Configuration
@@ -36,13 +29,16 @@ class LoadData {
             RoleRepository roleRepository,
             PaymentRepository paymentRepository,
             PaymentScheduleRepository paymentScheduleRepository,
-            VehicleRepository VehicleRepository
-
+            VehicleRepository vehicleRepository,
+            CoverageCategoryRepository coverageCategoryRepository,
+            CoverageRepository coverageRepository,
+            InsuranceRepository insuranceRepository
     ) {
         return args -> {
             log.info("Loading Roles...");
             Set<Role> adminRoleSet = new java.util.HashSet<>(Collections.emptySet());
             Set<Role> userRoleSet = new java.util.HashSet<>(Collections.emptySet());
+            Set<Coverage> coverageSet = new java.util.HashSet<>(Collections.emptySet());
             Role adminClient = roleRepository.save(new Role("AdministratorClient"));
             Role standardClient = roleRepository.save(new Role("StandardClient"));
             adminRoleSet.add(adminClient);
@@ -69,12 +65,19 @@ class LoadData {
             Vehicle vehicle3 = new Vehicle(null, "Ford", "Mustang");
             Vehicle vehicle4 = new Vehicle(null, "Nissan", "Sentra");
             Vehicle vehicle5 = new Vehicle(null, "Chevrolet", "Camaro");
-            VehicleRepository.save(vehicle1);
-            VehicleRepository.save(vehicle2);
-            VehicleRepository.save(vehicle3);
-            VehicleRepository.save(vehicle4);
-            VehicleRepository.save(vehicle5);
-
+            vehicleRepository.save(vehicle1);
+            vehicleRepository.save(vehicle2);
+            vehicleRepository.save(vehicle3);
+            vehicleRepository.save(vehicle4);
+            vehicleRepository.save(vehicle5);
+            CoverageCategory coverageCategory1 = new CoverageCategory("Naturales", "Coberturas sobre causas naturales.");
+            coverageCategoryRepository.save(coverageCategory1);
+            Coverage coverage1 = new Coverage("Incendio", "Incendios causados por causas naturales", 40000.0, 10.0, coverageCategory1);
+            coverageRepository.save(coverage1);
+            coverageSet.add(coverage1);
+            Date date1 = new Date();
+            Insurance insurance1 = new Insurance("123456", 2011, 15000000, date1, payment2, yearlyPayment, user2, vehicle1, coverageSet);
+            insuranceRepository.save(insurance1);
         };
     }
 }
