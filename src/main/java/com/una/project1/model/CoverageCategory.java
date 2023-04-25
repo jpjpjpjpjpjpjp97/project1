@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "CoverageCategory")
+@Table(name = "coverageCategory")
 public class CoverageCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,9 +17,13 @@ public class CoverageCategory {
     String name;
     @NotBlank(message = "Model cannot be empty.")
     String description;
-
+/*
     @ManyToMany(mappedBy = "categories")
     private Set<Coverage> coverages = new HashSet<>();
+  */
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "coverage", cascade = CascadeType.REMOVE)
+    private Set<Coverage> coverage = new HashSet<>();
+
 
     public CoverageCategory(Long id, String name, String description) {
         this.id = id;
