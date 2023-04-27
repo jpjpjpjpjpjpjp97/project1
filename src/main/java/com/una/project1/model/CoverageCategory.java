@@ -15,6 +15,15 @@ public class CoverageCategory {
     private Long id;
     @NotBlank(message = "Brand cannot be empty.")
     private String name;
+
+    public Set<Coverage> getCoverages() {
+        return coverages;
+    }
+
+    public void setCoverages(Set<Coverage> coverages) {
+        this.coverages = coverages;
+    }
+
     @NotBlank(message = "Model cannot be empty.")
     private String description;
 

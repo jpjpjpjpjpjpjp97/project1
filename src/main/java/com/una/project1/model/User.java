@@ -34,6 +34,8 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.REMOVE)
     private Set<Payment> payments = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.REMOVE)
+    private Set<Insurance> insurancet = new HashSet<>();
 
 
 
@@ -137,6 +139,18 @@ public class User {
 
     public void addPayment(Payment payment) {
         this.payments.add(payment);
+    }
+
+    public Set<Insurance> getInsurance() {
+        return insurancet;
+    }
+
+    public void setInsurance(Set<Insurance> insurance) {
+        this.insurancet = insurance;
+    }
+
+    public void addInsurance(Insurance insurance) {
+        this.insurancet.add(insurance);
     }
 
     @Override

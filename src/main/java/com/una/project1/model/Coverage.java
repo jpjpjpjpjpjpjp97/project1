@@ -25,13 +25,7 @@ public class Coverage {
     @NotNull(message = "Percentage price cannot be empty.")
     private Double valuationPercentagePrice;
 
-    /*
-    @ManyToMany
-    @JoinTable(name = "coverage_coverageCategory",
-            joinColumns = @JoinColumn(name = "coverage_id"),
-            inverseJoinColumns = @JoinColumn(name = "coveragecategory_id"))
-    private Set<CoverageCategory> categories = new HashSet<>();
-*/
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="coverageCategory_id", referencedColumnName = "id")
     private CoverageCategory coverageCategory;
