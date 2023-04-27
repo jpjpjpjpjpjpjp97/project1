@@ -46,6 +46,10 @@ public class Vehicle {
         this.model = model;
     }
 
+    public String getModelandBrand() {
+        return brand + "-"+ model;
+    }
+
     @Override
     public String toString() {
         return "Vehicle{" +
