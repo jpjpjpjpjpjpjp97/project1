@@ -3,6 +3,7 @@ package com.una.project1.controller;
 import com.una.project1.model.Insurance;
 import com.una.project1.model.User;
 import com.una.project1.service.*;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -75,4 +76,23 @@ public class InsuranceController {
         }
         return "redirect:/insurance";
     }
+
+    @PreAuthorize("isSelfOrAdmin(#numberPlate)")
+    @GetMapping("/{numberPlate}")
+    public String userDetail(
+            Model model,
+            @PathVariable("numberPlate") String numberPlate
+    ){
+        Optional<Insurance> insurance = insuranceService.findByNumberPlate(numberPlate);
+        if (!insurance.isPresent()){
+            return "404";
+        }
+        model.addAttribute("insurance",insurance.get());
+        return "insurance/detail";
+    }
+
+
+
+
+
 }

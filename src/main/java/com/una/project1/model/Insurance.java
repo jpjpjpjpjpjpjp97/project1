@@ -32,19 +32,19 @@ public class Insurance {
     private Date startDate;
     //Puede ser la clase que llama a date
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="payment_id", referencedColumnName = "id")
     private Payment payment;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="paymentSchedule_id", referencedColumnName = "id")
     private PaymentSchedule paymentSchedule;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user_id", referencedColumnName = "id")
-    private User user;
+    private User client;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="vehicle_id", referencedColumnName = "id")
     private Vehicle vehicle;
 
@@ -65,7 +65,7 @@ public class Insurance {
         this.startDate = startDate;
         this.payment = payment;
         this.paymentSchedule = paymentSchedule;
-        this.user = client;
+        this.client = client;
         this.vehicle = vehicle;
     }
 
@@ -78,7 +78,7 @@ public class Insurance {
         this.startDate = startDate;
         this.payment = payment;
         this.paymentSchedule = paymentSchedule;
-        this.user = client;
+        this.client = client;
         this.vehicle = vehicle;
         this.coverages = coverages;
     }
@@ -141,30 +141,25 @@ public class Insurance {
     }
 
     public User getClient() {
-        return user;
+        return client;
     }
 
     public void setClient(User client) {
-        this.user = client;
+        this.client = client;
     }
 
     public Vehicle getVehicle() {
         return vehicle;
     }
-
+    public String getInfoVehicle() {
+        return vehicle.getModelandBrand() +"-"+carYear ;
+    }
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
 
     public Set<Coverage> getCoverages() {
         return coverages;
-    }
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public void setCoverages(Set<Coverage> coverages) {
