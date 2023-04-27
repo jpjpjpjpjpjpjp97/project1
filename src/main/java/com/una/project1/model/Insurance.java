@@ -42,7 +42,7 @@ public class Insurance {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id", referencedColumnName = "id")
-    private User client;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="vehicle_id", referencedColumnName = "id")
@@ -65,7 +65,7 @@ public class Insurance {
         this.startDate = startDate;
         this.payment = payment;
         this.paymentSchedule = paymentSchedule;
-        this.client = client;
+        this.user = client;
         this.vehicle = vehicle;
     }
 
@@ -78,7 +78,7 @@ public class Insurance {
         this.startDate = startDate;
         this.payment = payment;
         this.paymentSchedule = paymentSchedule;
-        this.client = client;
+        this.user = client;
         this.vehicle = vehicle;
         this.coverages = coverages;
     }
@@ -141,11 +141,11 @@ public class Insurance {
     }
 
     public User getClient() {
-        return client;
+        return user;
     }
 
     public void setClient(User client) {
-        this.client = client;
+        this.user = client;
     }
 
     public Vehicle getVehicle() {
@@ -158,6 +158,13 @@ public class Insurance {
 
     public Set<Coverage> getCoverages() {
         return coverages;
+    }
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setCoverages(Set<Coverage> coverages) {
