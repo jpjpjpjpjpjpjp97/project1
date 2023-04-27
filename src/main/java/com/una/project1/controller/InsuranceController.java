@@ -26,20 +26,18 @@ public class InsuranceController {
     @Autowired
     private UserService userService;
 
-    @PreAuthorize("hasAuthority('AdministratorClient')")
     @GetMapping("")
     public String insuranceList(
             Model model
     ){
         List<User> users = userService.findAll();
-        List<Insurance> insurancet = insuranceService.findAll();
-        model.addAttribute("insurancet", insurancet);
+        List<Insurance> insurances = insuranceService.findAll();
+        model.addAttribute("insurances", insurances);
         model.addAttribute("users", users);
         model.addAttribute("insurance", new Insurance());
         return "insurance/list";
     }
 
-    @PreAuthorize("hasAuthority('AdministratorClient')")
     @PostMapping("")
     public String insurancesCreate(
             Model model,
@@ -47,12 +45,12 @@ public class InsuranceController {
             BindingResult result
     ){
         List<User> users = userService.findAll();
-        List<Insurance> insurancet = insuranceService.findAll();
+        List<Insurance> insurances = insuranceService.findAll();
 
         result = insuranceService.validateCreation(insurance, result, "create");
         if (result.hasErrors()){
 
-            model.addAttribute("insurancet", insurancet);
+            model.addAttribute("insurances", insurances);
             model.addAttribute("users", users);
             model.addAttribute("insurance", insurance);
             return "insurance/list";

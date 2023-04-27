@@ -40,7 +40,7 @@ public class Insurance {
     @JoinColumn(name="paymentSchedule_id", referencedColumnName = "id")
     private PaymentSchedule paymentSchedule;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;
 
