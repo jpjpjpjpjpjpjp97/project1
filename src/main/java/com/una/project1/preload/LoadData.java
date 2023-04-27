@@ -16,6 +16,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
+import static com.una.project1.utils.ImageUtil.getStaticImage;
+
 @Configuration
 class LoadData {
     private static final Logger log = LoggerFactory.getLogger(LoadData.class);
@@ -60,7 +62,7 @@ class LoadData {
             paymentScheduleRepository.save(biannualPayment);
             paymentScheduleRepository.save(yearlyPayment);
             log.info("Loading Vehicles...");
-            Vehicle vehicle1 = new Vehicle(null, "Toyota", "Corolla");
+            Vehicle vehicle1 = new Vehicle("Toyota", "Corolla", getStaticImage("src/main/resources/static/images/toyota_corolla_2020.jpg"));
             Vehicle vehicle2 = new Vehicle(null, "Honda", "Civic");
             Vehicle vehicle3 = new Vehicle(null, "Ford", "Mustang");
             Vehicle vehicle4 = new Vehicle(null, "Nissan", "Sentra");

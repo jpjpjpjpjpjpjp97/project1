@@ -6,11 +6,20 @@ import jakarta.validation.constraints.NotBlank;
 public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @NotBlank(message = "Brand cannot be empty.")
-    String brand;
+    private String brand;
     @NotBlank(message = "Model cannot be empty.")
-    String model;
+    private String model;
+    @Lob
+    @Column(name = "car_image")
+    private byte[] carImage;
+
+    public Vehicle(String brand, String model, byte[] carImage) {
+        this.brand = brand;
+        this.model = model;
+        this.carImage = carImage;
+    }
 
     public Vehicle(Long id, String brand, String model) {
         this.id = id;
@@ -44,6 +53,14 @@ public class Vehicle {
 
     public void setModel(String model) {
         this.model = model;
+    }
+
+    public byte[] getCarImage() {
+        return carImage;
+    }
+
+    public void setCarImage(byte[] carImage) {
+        this.carImage = carImage;
     }
 
     @Override
