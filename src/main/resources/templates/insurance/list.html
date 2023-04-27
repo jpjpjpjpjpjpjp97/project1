@@ -11,7 +11,7 @@
 <body>
 <div layout:fragment="maincontent">
     <div class="row col-9 justify-content-end mb-0 pb-0 pe-0">
-        <a class="btn btn-primary col-auto rounded-0 rounded-top" data-bs-toggle="modal" data-bs-target="#formModal"  th:href="@{/insurance}">Add Insurance</a>
+        <a class="btn btn-primary col-auto rounded-0 rounded-top" data-bs-toggle="modal" data-bs-target="#formModal"  th:href="@{/insurance/form}">Add Insurance</a>
     </div>
     <div class="card row col-9 justify-content-center bg-light rounded-0 rounded-bottom rounded-start shadow-sm mt-0">
         <div class="card-title ps-2 mt-3">
@@ -23,18 +23,21 @@
                     <th scope="col">ID</th>
                     <th scope="col">Number Plate</th>
                     <th scope="col">Date</th>
-                    <th scope="col">Car</th>
+                    <th scope="col">Vehicle</th>
                     <th scope="col"></th>
                     <th scope="col">Valuable</th>
-                    <th scope="col"></th>
+                    <th scope="col">View</th>
                 </tr>
                 <tr th:each="insurance : ${insurances}">
                     <td th:text="${insurance.id}">None</td>
                     <th scope="row"><a class="link-secondary"  th:text="${insurance.numberPlate}" th:href="@{/insurance/{numberPlate}(numberPlate = ${insurance.numberPlate})}">None</a></th>
 
                     <td th:text="${insurance.startDate}">None</td>
+
+                    <td th:text="${insurance.getInfoVehicle()}">None</td>
+                    <td >None</td>
+
                     <td th:text="${insurance.valuation}">None</td>
-                    <td th:text="${insurance.user.name }">None</td>
                     <th scope="row"><a class="link-secondary" th:href="@{/insurance/{numberPlate}(numberPlate = ${insurance.numberPlate})}">View Details</a></th>
 
                 </tr>

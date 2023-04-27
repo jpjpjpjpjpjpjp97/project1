@@ -7,7 +7,7 @@
 >
 <head>
     <meta charset="UTF-8">
-    <title th:text="'User Detail' + ${insurance.numberPlate}">User Detail</title>
+    <title th:text="'Insurance Detail' + ${insurance.numberPlate}">Insurance Detail</title>
 </head>
 <body>
 <div layout:fragment="maincontent">
@@ -25,31 +25,8 @@
             <h4 class="text-center">User Details</h4>
         </div>
         <div class="card-body row col-12 justify-content-center">
-            <div class="col-10" th:object="${insurance}">
-                <p>Username: <span th:text="*{numberPlate}"></span></p>
 
-                <div th:if="*{#lists.size(payments) != 0}">
-                    <p>Payments:</p>
-                    <div class="ps-2" th:each="payment : *{payments}">
-                        <span th:text="'Owner: '+${payment.owner} + ' | '"></span>
-                        <span th:text="'Number: '+${payment.getSafeNumber} + ' | '"></span>
-                        <span th:text="'Expiration Date: '+${payment.expirationDate} + ' | '"></span>
-                        <div>Billing Address:</div>
-                        <div class="ps-3" th:text="${payment.billingAddress}"></div>
-                        <hr/>
-                    </div>
-                </div>
-                <div class="row col-12 justify-content-center">
-                    <button type="button" class="btn btn-primary col-3 m-2" data-bs-toggle="modal" data-bs-target="#updateModal">
-                        Update
-                    </button>
-                    <a type="button" class="btn btn-secondary col-3 m-2" th:href="@{/user/{username}/change_password(username = *{username})}" th:if="${user.username == #authentication.name}">
-                        Change Password
-                    </a>
-                    <button type="button" class="btn btn-danger col-3 m-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                        Delete
-                    </button>
-                </div>
+
 
             </div>
         </div>

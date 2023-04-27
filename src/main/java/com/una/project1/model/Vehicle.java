@@ -63,6 +63,10 @@ public class Vehicle {
         this.carImage = carImage;
     }
 
+    public String getModelandBrand() {
+        return brand + "-"+ model;
+    }
+
     @Override
     public String toString() {
         return "Vehicle{" +
