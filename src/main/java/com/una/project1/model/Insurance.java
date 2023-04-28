@@ -30,7 +30,6 @@ public class Insurance {
     @NotNull(message = "A date is required.")
     @Column()
     private Date startDate;
-    //Puede ser la clase que llama a date
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="payment_id", referencedColumnName = "id")
