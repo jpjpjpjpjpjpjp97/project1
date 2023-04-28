@@ -2,6 +2,7 @@ package com.una.project1.controller;
 
 import com.una.project1.model.Insurance;
 import com.una.project1.model.Payment;
+import com.una.project1.model.Role;
 import com.una.project1.model.User;
 import com.una.project1.form.UserRegisterHelper;
 import com.una.project1.service.InsuranceService;
@@ -14,12 +15,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class MainController {
@@ -33,7 +37,12 @@ public class MainController {
     private PaymentService paymentService;
     @GetMapping("/")
     public String main(Authentication authentication, Model model){
-        return "redirect:/insurance";
+        Optional<User> user = userService.findByUsername(authentication.getName());
+        Optional<Role> adminRole = roleService.findByName("AdministratorClient");
+        if (!user.isPresent() || !adminRole.isPresent()){
+            return "404";
+        }
+        return user.get().getRoles().contains(adminRole.get()) ? "redirect:/user" : "redirect:/insurance";
     }
     @GetMapping("/auth/register")
     public String registerGet(Model model){
@@ -79,11 +88,6 @@ public class MainController {
     @GetMapping("/auth/logout")
     public String logout(){
         return "auth/logout";
-    }
-    @PreAuthorize("hasAuthority('AdministratorClient')")
-    @GetMapping("/auth/protected")
-    public String protectedPage(Authentication authentication, Model model){
-        return "auth/protected";
     }
 
 }

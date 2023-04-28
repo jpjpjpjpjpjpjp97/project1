@@ -58,8 +58,10 @@ public class InsuranceService {
         return insurance;
     }
 
-    public Date starDate(Insurance insurance){
-        return insurance.getStartDate();
+    public Insurance starDate(Insurance insurance){
+        Date date = new Date();
+        insurance.setStartDate(date);
+        return insurance;
     }
 
     public Insurance saveInsurance(Insurance insurance) {

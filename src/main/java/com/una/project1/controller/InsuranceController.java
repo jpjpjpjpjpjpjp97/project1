@@ -32,7 +32,9 @@ public class InsuranceController {
     private PaymentService paymentService;
     @Autowired
     private CoverageService coverageService;
+
     @Transactional
+    @PreAuthorize("hasAuthority('StandardClient')")
     @GetMapping("")
     public String insuranceList(
             Model model,
@@ -53,6 +55,7 @@ public class InsuranceController {
     }
 
     @Transactional
+    @PreAuthorize("hasAuthority('StandardClient')")
     @PostMapping("")
     public String insurancesCreate(
             Model model,
@@ -78,45 +81,43 @@ public class InsuranceController {
             return "insurance/form";
         }
         insuranceService.starDate(insurance);
-        // agregar Start Date
         insuranceService.assignUser(insurance, user.get());
         insuranceService.createInsurance(insurance);
         return "redirect:/";
     }
 
-    @GetMapping("/allInsurance")
-    public String showAllInsurance(Model model) {
-        List<Insurance> insurances = insuranceService.findAll();
-        model.addAttribute("insurances", insurances);
-        return "insurance/allInsurance";
-    }
-
+    @PreAuthorize("hasAuthority('StandardClient')")
     @GetMapping("/deleteInsurance/{id}")
-    public String deleteInsurance(Model model, @PathVariable("id") Long id) {
+    public String deleteInsurance(Model model, @PathVariable("id") Long id, Authentication authentication) {
         Optional<Insurance> optionalInsurance = insuranceService.findById(id);
-        if (optionalInsurance.isPresent()) {
-            Insurance insurance = optionalInsurance.get();
-            insuranceService.deleteInsurance(insurance);
+        if (!optionalInsurance.isPresent()){
+            return "404";
         }
+        Insurance insurance = optionalInsurance.get();
+        if (!(authentication.getName().equals(insurance.getClient().getUsername()))){
+            return "403";
+        }
+        insuranceService.deleteInsurance(insurance);
         return "redirect:/insurance";
     }
 
     @Transactional
+    @PreAuthorize("hasAuthority('StandardClient')")
     @GetMapping("/{numberPlate}")
-    public String userDetail(
+    public String insuranceByNumberplateDetail(
             Model model,
-            @PathVariable("numberPlate") String numberPlate
+            @PathVariable("numberPlate") String numberPlate,
+            Authentication authentication
     ){
-        Optional<Insurance> insurance = insuranceService.findByNumberPlate(numberPlate);
-        if (!insurance.isPresent()){
+        Optional<Insurance> optionalInsurance = insuranceService.findByNumberPlate(numberPlate);
+        if (!optionalInsurance.isPresent()){
             return "404";
         }
-        model.addAttribute("insurance",insurance.get());
+        Insurance insurance = optionalInsurance.get();
+        if (!(authentication.getName().equals(insurance.getClient().getUsername()))){
+            return "403";
+        }
+        model.addAttribute("insurance",optionalInsurance.get());
         return "insurance/detail";
     }
-
-
-
-
-
 }

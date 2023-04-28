@@ -47,13 +47,6 @@ public class CoverageController {
         return "redirect:/coverage";
     }
 
-    @GetMapping("/allCoverages")
-    public String showAllCoverages(Model model) {
-        List<Coverage> coverages = coverageService.findAll();
-        model.addAttribute("coverages", coverages);
-        return "coverage/allCoverages";
-    }
-
     @PreAuthorize("hasAuthority('AdministratorClient')")
     @GetMapping("/deleteCoverage/{id}")
     public String deleteCoverage(Model model, @PathVariable("id") Long id) {
