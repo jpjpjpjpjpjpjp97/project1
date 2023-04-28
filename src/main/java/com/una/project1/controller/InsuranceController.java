@@ -95,7 +95,7 @@ public class InsuranceController {
         return "redirect:/insurance";
     }
 
-    @PreAuthorize("isSelfOrAdmin(#numberPlate)")
+    @Transactional
     @GetMapping("/{numberPlate}")
     public String userDetail(
             Model model,
