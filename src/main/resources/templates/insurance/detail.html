@@ -25,7 +25,12 @@
             <h4 class="text-center">User Details</h4>
         </div>
         <div class="card-body row col-12 justify-content-center">
-
+            <div class="col-10" th:object="${insurance}">
+                <p>NumberPlate: <span th:text="${insurance.numberPlate}"> None</span></p>
+                <p>Model-Brand-Year: <span th:text="${insurance.getInfoVehicle()}">None</span></p>
+                <p>Valuation: <span th:text="${insurance.valuation}">None</span></p>
+                <p>Name: <span th:text="${insurance.client.name}">None</span></p>
+            </div>
 
 
             </div>

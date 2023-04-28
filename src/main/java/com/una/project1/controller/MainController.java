@@ -30,7 +30,7 @@ public class MainController {
 
     @GetMapping("/")
     public String main(Authentication authentication, Model model){
-        return "main";
+        return "redirect:/insurance";
     }
     @GetMapping("/auth/register")
     public String registerGet(Model model){
@@ -82,4 +82,9 @@ public class MainController {
     public String protectedPage(Authentication authentication, Model model){
         return "auth/protected";
     }
+
+
+
+
+
 }
