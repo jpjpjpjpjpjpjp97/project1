@@ -12,10 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +45,7 @@ public class InsuranceController {
         List<Insurance> insurances = insuranceService.findByUser(user.get());
         model.addAttribute("paymentSchedules", paymentScheduleService.findAll());
         model.addAttribute("vehicles", vehicleService.findAll());
-        model.addAttribute("payments", paymentService.findAll());
+        model.addAttribute("payments", user.get().getPayments());
         model.addAttribute("coverages", coverageService.findAll());
         model.addAttribute("insurances", insurances);
         model.addAttribute("insurance", new Insurance());
@@ -80,6 +77,7 @@ public class InsuranceController {
             model.addAttribute("insurance", insurance);
             return "insurance/form";
         }
+        // agregar Start Date
         insuranceService.assignUser(insurance, user.get());
         insuranceService.createInsurance(insurance);
         return "redirect:/";

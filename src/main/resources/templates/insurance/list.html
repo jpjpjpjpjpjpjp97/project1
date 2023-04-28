@@ -40,16 +40,15 @@
                     </td>
                     <td th:text="${insurance.valuation}">None</td>
                     <th scope="row"><a class="link-secondary" th:href="@{/insurance/{numberPlate}(numberPlate = ${insurance.numberPlate})}">View Details</a></th>
-
                 </tr>
-
-
-
             </table>
-
         </div>
     </div>
     <div th:insert="~{insurance/form :: insurance_form}"></div>
+    <div th:insert="~{insurance/preview_quote_modal :: quote_modal}"></div>
+</div>
+<div layout:fragment="extra_scripts">
+    <script type="application/javascript" th:src="@{/js/preview_quote.js}"></script>
 </div>
 </body>
 </html>
