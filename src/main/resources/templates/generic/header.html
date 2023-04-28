@@ -33,6 +33,11 @@
                         </span>
                         <span sec:authorize="hasAuthority('AdministratorClient')">
                             <li class="nav-item">
+                                <a class="nav-link" th:href="@{/coverage}">Coverages</a>
+                            </li>
+                        </span>
+                        <span sec:authorize="hasAuthority('AdministratorClient')">
+                            <li class="nav-item">
                                 <a class="nav-link" th:href="@{/vehicle}">Vehicles</a>
                             </li>
                         </span>

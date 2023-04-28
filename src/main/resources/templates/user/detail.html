@@ -45,6 +45,24 @@
                             <hr/>
                         </div>
                     </div>
+                    <div>
+                        <p>Acquired Insurances:</p>
+                        <div class="ps-2" th:each="insurance : ${insurances}">
+                            <p>Car Details</p>
+                            <div class="ps-2">
+                                <div th:text="'Number Plate: '+${insurance.numberPlate}"></div>
+                                <div th:text="'Model: '+ ${insurance.carYear} + ' ' +${insurance.vehicle.brand} + ' ' + ${insurance.vehicle.model}"></div>
+                                <div th:text="'Valuation: '+${insurance.valuation}"></div>
+                                <div th:text="'Payment Schedule: '+${insurance.paymentSchedule.name}"></div>
+                                <div th:text="'Payment Method: '+${insurance.payment.safeNumber} + ' (' + ${insurance.payment.owner} + ')'"></div>
+                            </div>
+                            <p>Acquired Coverages</p>
+                            <ul>
+                                <li th:each="coverage : ${insurance.coverages}" th:text="${coverage.name}"></li>
+                            </ul>
+                            <hr/>
+                        </div>
+                    </div>
                     <div class="row col-12 justify-content-center">
                         <button type="button" class="btn btn-primary col-3 m-2" data-bs-toggle="modal" data-bs-target="#updateModal">
                             Update

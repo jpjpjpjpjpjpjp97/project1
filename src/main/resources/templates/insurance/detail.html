@@ -11,14 +11,13 @@
 <body>
 <div layout:fragment="maincontent">
            <div class="row col-8 mb-0 pb-0 ps-0">
-
-            <a class="btn btn-secondary col-auto rounded-0 rounded-top" th:href="@{/insurance}">All Insurance</a>
+                <a class="btn btn-secondary col-auto rounded-0 rounded-top" th:href="@{/insurance}">All Insurances</a>
            </div>
 
 
     <div class="card row col-8 justify-content-center bg-light rounded-0 rounded-bottom rounded-end shadow-sm p-3 m-0">
         <div class="card-title mt-2">
-            <h4 class="text-center">User Details</h4>
+            <h4 class="text-center">Insurance Details</h4>
             <img th:if="${insurance.vehicle.carImage != null}" th:src="@{'/vehicle/image/' + ${insurance.vehicle.id}}" alt="" style="width: 100px;" />
 
         </div>
@@ -29,11 +28,8 @@
                 <p>Valuation: <span th:text="${insurance.valuation}">None</span></p>
                 <p>Name: <span th:text="${insurance.client.name}">None</span></p>
             </div>
-
-
-            </div>
         </div>
     </div>
-
+</div>
 </body>
 </html>

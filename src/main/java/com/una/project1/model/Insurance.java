@@ -27,7 +27,7 @@ public class Insurance {
     @Column()
     private int valuation;
 
-    @NotNull(message = "A date is required.")
+
     @Column()
     private Date startDate;
 

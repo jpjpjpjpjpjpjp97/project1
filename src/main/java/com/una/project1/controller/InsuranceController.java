@@ -38,7 +38,8 @@ public class InsuranceController {
     @GetMapping("")
     public String insuranceList(
             Model model,
-            Authentication authentication
+            Authentication authentication,
+            @RequestParam(value = "error", required = false) String error
     ){
         Optional<User> user= userService.findByUsername(authentication.getName());
         if (!user.isPresent()){
@@ -61,29 +62,31 @@ public class InsuranceController {
             Model model,
             @Valid Insurance insurance,
             BindingResult result,
-            Authentication authentication
+            Authentication authentication,
+            @RequestParam(value = "error", required = false) String error
     ){
         Optional<User> user= userService.findByUsername(authentication.getName());
         if (!user.isPresent()){
             return "404";
         }
         List<User> users = userService.findAll();
-        List<Insurance> insurances = insuranceService.findAll();
+        List<Insurance> insurances = insuranceService.findByUser(user.get());
         result = insuranceService.validateCreation(insurance, result, "create");
         if (result.hasErrors()){
             model.addAttribute("paymentSchedules", paymentScheduleService.findAll());
             model.addAttribute("vehicles", vehicleService.findAll());
             model.addAttribute("payments", paymentService.findAll());
             model.addAttribute("coverages", coverageService.findAll());
-            model.addAttribute("insurances", user.get().getInsurances());
+            model.addAttribute("insurances", insurances);
             model.addAttribute("users", users);
             model.addAttribute("insurance", insurance);
-            return "insurance/form";
+            model.addAttribute("error", "true");
+            return "insurance/list";
         }
         insuranceService.starDate(insurance);
         insuranceService.assignUser(insurance, user.get());
         insuranceService.createInsurance(insurance);
-        return "redirect:/";
+        return "redirect:/insurance";
     }
 
     @PreAuthorize("hasAuthority('StandardClient')")

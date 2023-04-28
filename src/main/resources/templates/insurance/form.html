@@ -13,7 +13,7 @@
     <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form id="insurance_form" method="post" th:action='@{/insurance}' th:object="${insurance}" class="row col-12 justify-content-center">
+                <form id="insurance_form" method="post" th:action='@{/insurance}' th:object="${insurance}" class="row col-12 justify-content-center m-0">
                     <div class="modal-header">
                         <h5 class="modal-title" id="formModalLabel" th:text="@{${insurance.id != null ? 'Update Insurance' : 'Create Insurance' }}">Modal title</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -30,7 +30,7 @@
                         <div>
                             <br>
                             <label for="carYear" class="form-label col-12 fw-bold my-auto">Year</label>
-                            <input id="carYear" name="carYear" type="number" min="1990" max="2023" step="1" value="1990" class="form-control" th:field="*{carYear}" />
+                            <input id="carYear" name="carYear" type="number" min="1990" max="2023" step="1" th:value="1990" class="form-control" th:field="*{carYear}" />
                             <ul th:if="${#fields.hasErrors('carYear')}" class="alert alert-danger mb-0 mt-1 p-1 ps-4">
                                 <li th:each="err : ${#fields.errors('carYear')}" th:text="${err}" class="error"></li>
                             </ul>
@@ -76,14 +76,17 @@
                                 <li th:each="err : ${#fields.errors('payment')}" th:text="${err}" class="error"></li>
                             </ul>
                         </div>
-                        <div th:each="coverage : ${coverages}"  >
-                            <input class="form-check-input" type="checkbox" name="coverages" th:field="*{coverages}" th:id="'coverage_'+${coverage.id}" th:value="${coverage.id}"  th:attr="data-name=${coverage.name}, data-minprice=${coverage.minimumPrice}, data-percentage=${coverage.valuationPercentagePrice}" >
-                            <label class="form-check-label" th:for="'coverage_'+${coverage.id}" th:text="${coverage.name}"> </label>
-                            <ul th:if="${#fields.hasErrors('coverages')}" class="alert alert-danger mb-0 mt-1 p-1 ps-4">
-                                <li th:each="err : ${#fields.errors('coverages')}" th:text="${err}" class="error"></li>
-                            </ul>
+                        <h5>Coverages</h5>
+                        <div class="row col-12 justify-content=between">
+                            <div th:each="coverage : ${coverages}" class="col-4">
+                                <input class="form-check-input" type="checkbox" name="coverages" th:field="*{coverages}" th:id="'coverage_'+${coverage.id}" th:value="${coverage.id}"  th:attr="data-name=${coverage.name}, data-minprice=${coverage.minimumPrice}, data-percentage=${coverage.valuationPercentagePrice}" >
+                                <label class="form-check-label" th:for="'coverage_'+${coverage.id}" th:text="${coverage.name}"> </label>
+                                <ul th:if="${#fields.hasErrors('coverages')}" class="alert alert-danger mb-0 mt-1 p-1 ps-4">
+                                    <li th:each="err : ${#fields.errors('coverages')}" th:text="${err}" class="error"></li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="row col-12 justify-content-center">
+                        <div class="row col-12 justify-content-center mt-3">
                             <a id="preview_modal" href="#" class="btn btn-lg col-4 btn-primary fw-bold mb-2" data-bs-toggle="modal" data-bs-target="#previewModal" data-bs-dismiss="modal">Preview Insurance</a>
                         </div>
                     </div>

@@ -5,9 +5,11 @@ import com.una.project1.model.Role;
 import com.una.project1.model.User;
 import com.una.project1.form.UserPasswordHelper;
 import com.una.project1.form.UserUpdateHelper;
+import com.una.project1.service.InsuranceService;
 import com.una.project1.service.RoleService;
 import com.una.project1.service.UserService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,6 +29,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private InsuranceService insuranceService;
 
     @PreAuthorize("hasAuthority('AdministratorClient')")
     @GetMapping("")
@@ -62,6 +66,7 @@ public class UserController {
         userService.createUser(user);
         return "redirect:user?create=true";
     }
+    @Transactional
     @PreAuthorize("isSelfOrAdmin(#username)")
     @GetMapping("/{username}")
     public String userDetail(
@@ -72,9 +77,12 @@ public class UserController {
         if (!user.isPresent()){
             return "404";
         }
+
         model.addAttribute("user",user.get());
+        model.addAttribute("insurances",insuranceService.findByUser(user.get()));
         return "user/detail";
     }
+    @Transactional
     @PreAuthorize("isSelfOrAdmin(#username)")
     @PostMapping("/{username}")
     public String userModify(
@@ -89,8 +97,7 @@ public class UserController {
         }
         if (result.hasErrors()){
             model.addAttribute("user",existingUser.get());
-            model.addAttribute("userData", userData)
-            ;
+            model.addAttribute("userData", userData);
             return "user/detail";
         }
         userService.updateUser(existingUser.get(), userData);
