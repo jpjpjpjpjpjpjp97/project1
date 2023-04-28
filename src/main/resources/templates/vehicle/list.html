@@ -9,7 +9,7 @@
 <body>
 <div layout:fragment="maincontent">
     <div class="row col-9 justify-content-end mb-0 pb-0 pe-0">
-        <a class="btn btn-primary col-auto rounded-0 rounded-top" data-bs-toggle="modal" data-bs-target="#formModal" th:href="@{/vehicle/create}">Add Vehicle</a>
+        <a class="btn btn-primary col-auto rounded-0 rounded-top" data-bs-toggle="modal" data-bs-target="#createVehicleModal" href="#">Add Vehicle</a>
     </div>
     <div class="card row col-9 justify-content-center bg-light rounded-0 rounded-bottom rounded-start shadow-sm mt-0">
         <div class="card-title ps-2 mt-3">
@@ -31,25 +31,14 @@
                     <td>
                         <img th:if="${vehicle.carImage != null}" th:src="@{'/vehicle/image/' + ${vehicle.id}}" alt="" style="width: 100px;" />
                     </td>
-                   <!-- <th scope="row"><a class="link-secondary" th:href="@{/vehicle/{id}(id=${vehicle.id})}">View Details</a></th> -->
+                    <th scope="row"><a class="link-secondary" th:href="@{/vehicle/{vehicleId}/detail(vehicleId=${vehicle.id})}">View Details</a></th>
                 </tr>
             </table>
         </div>
     </div>
-</div>
-<div class="row col-12 justify-content-center">
-    <button type="button" class="btn btn-primary col-3 m-2" data-bs-toggle="modal" data-bs-target="#updateModal">
-        Update
-    </button>
-    <a type="button" class="btn btn-secondary col-3 m-2" th:href="@{/user/{username}/change_password(username = *{username})}" th:if="${user.username == #authentication.name}">
-        Change Password
-    </a>
-    <button type="button" class="btn btn-danger col-3 m-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
-        Delete
-    </button>
-</div>
-<div th:insert="~{user/update_form :: user_form}"></div>
-<div th:insert="~{user/confirm_delete_modal :: delete_modal}"></div>
+    <div th:insert="~{vehicle/form :: vehicle_form}"></div>
+    <div th:insert="~{vehicle/confirm_delete_modal :: delete_modal}"></div>
+
 </div>
 </body>
 </html>
