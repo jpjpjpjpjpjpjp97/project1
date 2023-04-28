@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface CoverageRepository extends JpaRepository<Coverage, Long> {
 
-    Optional<Coverage> findByName(String username);
+    Optional<Coverage> findByName(String name);
     Optional<Coverage> findById(Long id);
 
 }

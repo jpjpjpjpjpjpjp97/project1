@@ -33,6 +33,8 @@ public class Coverage {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "coverages")
     private Set<Insurance> insurances = new HashSet<>();
 
+
+
     public Coverage() {
     }
 
@@ -43,16 +45,16 @@ public class Coverage {
         this.valuationPercentagePrice = valuationPercentagePrice;
         this.coverageCategory = coverageCategory;
     }
-
-    public Coverage(long id, String name, String description, Double minimumPrice, Double valuationPercentagePrice, CoverageCategory coverageCategory, Set<Insurance> insurances) {
+    public Coverage(long id, String name, String description, Double minimumPrice, Double valuationPercentagePrice, CoverageCategory coverageCategory) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.minimumPrice = minimumPrice;
         this.valuationPercentagePrice = valuationPercentagePrice;
         this.coverageCategory = coverageCategory;
-        this.insurances = insurances;
     }
+
+
 
     public long getId() {
         return id;
@@ -109,13 +111,4 @@ public class Coverage {
     public void setInsurances(Set<Insurance> insurances) {
         this.insurances = insurances;
     }
-
-
-
-
-
-
-
-
-
 }
