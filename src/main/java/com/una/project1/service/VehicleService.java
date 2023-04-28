@@ -2,16 +2,14 @@ package com.una.project1.service;
 
 import com.una.project1.model.Vehicle;
 import com.una.project1.repository.VehicleRepository;
-import com.una.project1.utils.ImageUtil;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.text.html.Option;
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -65,6 +63,20 @@ public class VehicleService {
         byte[] image = vehicle.get().getCarImage() == null || vehicle.get().getCarImage().length == 0 ? null : vehicle.get().getCarImage();
         return image;
     }
+    public void save(Vehicle vehicle) {
+        vehicleRepository.save(vehicle);
+    }
+    public void deleteById(Long id) {
+        vehicleRepository.deleteById(id);
+    }
+
+    public Vehicle updateVehicle(Vehicle existingVehicle, @Valid Vehicle vehicleData, MultipartFile carImage) throws IOException {
+        existingVehicle.setBrand(vehicleData.getBrand());
+        existingVehicle.setModel(vehicleData.getModel());
+        existingVehicle.setCarImage(carImage.getBytes());
+        return vehicleRepository.save(existingVehicle);
+    }
+
 }
 
 

@@ -64,7 +64,12 @@ public class VehicleController {
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(new InputStreamResource(is));
     }
-    @PreAuthorize("hasAuthority('AdministratorClient')")
+    @GetMapping("/allVehicles")
+    public String showAllVehicles(Model model) {
+        List<Vehicle> vehicles = vehicleService.findAll();
+        model.addAttribute("vehicles", vehicles);
+        return "vehicle/allVehicles";
+    }
     @GetMapping("/deleteVehicle/{id}")
     public String deleteVehicle(Model model, @PathVariable("id") Long id) {
         Optional<Vehicle> optionalVehicle = vehicleService.findById(id);

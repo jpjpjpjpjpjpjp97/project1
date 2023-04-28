@@ -1,6 +1,10 @@
 package com.una.project1.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "Vehicle")
 public class Vehicle {
@@ -14,6 +18,8 @@ public class Vehicle {
     @Lob
     @Column(name = "car_image")
     private byte[] carImage;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vehicle", cascade = CascadeType.PERSIST)
+    private Set<Insurance> insurances = new HashSet<>();
 
     public Vehicle(String brand, String model, byte[] carImage) {
         this.brand = brand;
@@ -65,6 +71,14 @@ public class Vehicle {
 
     public String getModelandBrand() {
         return brand + "-"+ model;
+    }
+
+    public Set<Insurance> getInsurances() {
+        return insurances;
+    }
+
+    public void setInsurances(Set<Insurance> insurances) {
+        this.insurances = insurances;
     }
 
     @Override
