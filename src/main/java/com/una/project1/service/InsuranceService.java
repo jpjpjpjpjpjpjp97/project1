@@ -1,18 +1,15 @@
 package com.una.project1.service;
 
-import com.una.project1.form.UserUpdateHelper;
 import com.una.project1.model.Insurance;
-import com.una.project1.model.Payment;
 import com.una.project1.model.User;
-import com.una.project1.model.Vehicle;
 import com.una.project1.repository.InsuranceRepository;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,6 +56,10 @@ public class InsuranceService {
     public Insurance assignUser(Insurance insurance, User user) {
         insurance.setClient(user);
         return insurance;
+    }
+
+    public Date starDate(Insurance insurance){
+        return insurance.getStartDate();
     }
 
     public Insurance saveInsurance(Insurance insurance) {

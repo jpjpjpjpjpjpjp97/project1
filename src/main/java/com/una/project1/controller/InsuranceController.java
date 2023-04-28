@@ -77,6 +77,7 @@ public class InsuranceController {
             model.addAttribute("insurance", insurance);
             return "insurance/form";
         }
+        insuranceService.starDate(insurance);
         // agregar Start Date
         insuranceService.assignUser(insurance, user.get());
         insuranceService.createInsurance(insurance);
