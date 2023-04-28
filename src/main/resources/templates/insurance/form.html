@@ -53,9 +53,21 @@
                             </div>
                         </div>
                         <hr>
+                        <div>
+                            <label for="cards" class="form-label col-12 fw-bold my-auto">Cards</label>
+                            <select id="cards" name="cards" class="form-select d-inline">
+                                <option th:each="payment : ${payments}" th:value="${payment.id}" th:text="${payment.number} + ' ' + ${payment.owner}"></option>
+                            </select>
+
+                        </div>
 
 
-                        metodo de pago ,coverturas check ,
+
+                        <div th:each="coverage : ${coverages}"  >
+                            <input class="form-check-input" type="checkbox" th:value="${coverage.id}"  id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault" th:text="${coverage.name} + ' ' + ${coverage.description}"> </label>
+                        </div>
+
                         <div class="row col-12 justify-content-center">
                             <input type="submit" class="btn btn-lg col-4 btn-primary fw-bold mb-2" value="Save Insurance">
                             <div class="col-12 text-center"> <a th:href="@{/insurance}" class="link-secondary"> view all insurance!</a></div>
