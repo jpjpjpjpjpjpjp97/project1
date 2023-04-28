@@ -30,7 +30,7 @@
                         <div>
                             <br>
                             <label for="carYear" class="form-label col-12 fw-bold my-auto">Year</label>
-                            <input id="carYear" name="carYear" type="number" min="1990" max="2023" step="1" value="1990" class="form-control" th:field="*{carYear}"/>
+                            <input id="carYear" name="carYear" type="number" min="1990" max="2023" step="1" value="1990" class="form-control" th:field="*{carYear}" />
                             <ul th:if="${#fields.hasErrors('carYear')}" class="alert alert-danger mb-0 mt-1 p-1 ps-4">
                                 <li th:each="err : ${#fields.errors('carYear')}" th:text="${err}" class="error"></li>
                             </ul>
@@ -47,7 +47,7 @@
                         </div>
                         <div>
                             <label for="valuation" class="form-label col-12 fw-bold my-auto">Value</label>
-                            <input id="valuation" name="valuation" type="text" class="form-control" th:field="*{valuation}"/>
+                            <input id="valuation" name="valuation" type="text" class="form-control" th:field="*{valuation}" />
                             <ul th:if="${#fields.hasErrors('valuation')}" class="alert alert-danger mb-0 mt-1 p-1 ps-4">
                                 <li th:each="err : ${#fields.errors('valuation')}" th:text="${err}" class="error"></li>
                             </ul>
@@ -69,7 +69,7 @@
                         <hr>
                         <div>
                             <label for="payment" class="form-label col-12 fw-bold my-auto">Cards</label>
-                            <select id="payment" name="payment" class="form-select d-inline" th:field="*{payment}">
+                            <select id="payment" name="payment" class="form-select d-inline" th:field="*{payment}" >
                                 <option th:each="payment : ${payments}" th:value="${payment.id}" th:text="${payment.safeNumber} + ' (' + ${payment.owner} + ')'" th:attr="data-text=${payment.safeNumber} + ' (' + ${payment.owner} + ')'"></option>
                             </select>
                             <ul th:if="${#fields.hasErrors('payment')}" class="alert alert-danger mb-0 mt-1 p-1 ps-4">
@@ -80,10 +80,9 @@
                         <div th:each="coverage : ${coverages}"  >
                             <input class="form-check-input" type="checkbox" name="coverages" th:id="'coverage_'+${coverage.id}" th:value="${coverage.id}"  th:attr="data-name=${coverage.name}, data-minprice=${coverage.minimumPrice}, data-percentage=${coverage.valuationPercentagePrice}" >
                             <label class="form-check-label" th:for="'coverage_'+${coverage.id}" th:text="${coverage.name}"> </label>
-                            <ul th:if="${#fields.hasErrors('coverage')}" class="alert alert-danger mb-0 mt-1 p-1 ps-4">
-                                <li th:each="err : ${#fields.errors('coverage')}" th:text="${err}" class="error"></li>
-                            </ul>
                         </div>
+
+
 
                         <div class="row col-12 justify-content-center">
                             <a id="preview_modal" href="#" class="btn btn-lg col-4 btn-primary fw-bold mb-2" data-bs-toggle="modal" data-bs-target="#previewModal" data-bs-dismiss="modal">Preview Insurance</a>
