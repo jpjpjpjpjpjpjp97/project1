@@ -31,7 +31,10 @@ public class InsuranceController {
     private VehicleService vehicleService;
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private PaymentService paymentService;
+    @Autowired
+    private CoverageService coverageService;
     @Transactional
     @GetMapping("")
     public String insuranceList(
@@ -45,6 +48,8 @@ public class InsuranceController {
         List<Insurance> insurances = insuranceService.findByUser(user.get());
         model.addAttribute("paymentSchedules", paymentScheduleService.findAll());
         model.addAttribute("vehicles", vehicleService.findAll());
+        model.addAttribute("payments", paymentService.findAll());
+        model.addAttribute("coverages", coverageService.findAll());
         model.addAttribute("insurances", insurances);
         model.addAttribute("insurance", new Insurance());
         return "insurance/list";
@@ -68,6 +73,8 @@ public class InsuranceController {
         if (result.hasErrors()){
             model.addAttribute("paymentSchedules", paymentScheduleService.findAll());
             model.addAttribute("vehicles", vehicleService.findAll());
+            model.addAttribute("payments", paymentService.findAll());
+            model.addAttribute("coverages", coverageService.findAll());
             model.addAttribute("insurances", user.get().getInsurances());
             model.addAttribute("users", users);
             model.addAttribute("insurance", insurance);
