@@ -31,8 +31,6 @@ public class MainController {
     RoleService roleService;
     @Autowired
     private PaymentService paymentService;
-    @Autowired
-    private InsuranceService insuranceService;
     @GetMapping("/")
     public String main(Authentication authentication, Model model){
         return "redirect:/insurance";
@@ -87,46 +85,5 @@ public class MainController {
     public String protectedPage(Authentication authentication, Model model){
         return "auth/protected";
     }
-
-
-
-    @GetMapping("/insurance/form")
-    public String insuranceGet(Model model){
-        model.addAttribute("insurance", new Insurance());
-        return "/insurance/form";
-    }
-    @PostMapping("/insurance/form")
-    public String insurancePost(
-            @Valid Insurance insurance,
-            BindingResult result,
-            Model model
-    ) {
-
-
-        Insurance insurance1 = new Insurance(
-                insurance.getNumberPlate(),
-             insurance.getCarYear(),
-             insurance.getValuation(),
-             insurance.getStartDate(),
-             insurance.getPayment(),
-             insurance.getPaymentSchedule(),
-             insurance.getClient(),
-             insurance.getVehicle()
-
-        );
-
-        result = insuranceService.validateCreation(insurance1, result, "create");
-        if (result.hasErrors()){
-            model.addAttribute("insurance", insurance);
-            return "/insurance/form";
-        }
-        insuranceService.createInsurance(insurance);
-
-        return "redirect:/";
-    }
-
-
-
-
 
 }

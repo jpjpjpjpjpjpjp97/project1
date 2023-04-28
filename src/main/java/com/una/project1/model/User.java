@@ -34,7 +34,7 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.REMOVE)
     private Set<Payment> payments = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client", cascade = CascadeType.REMOVE)
     private Set<Insurance> insurances = new HashSet<>();
 
 

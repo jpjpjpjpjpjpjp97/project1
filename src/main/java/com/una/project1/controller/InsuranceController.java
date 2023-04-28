@@ -4,6 +4,7 @@ import com.una.project1.model.Insurance;
 import com.una.project1.model.User;
 import com.una.project1.service.*;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,39 +26,56 @@ public class InsuranceController {
     @Autowired
     private InsuranceService insuranceService;
     @Autowired
+    private PaymentScheduleService paymentScheduleService;
+    @Autowired
+    private VehicleService vehicleService;
+    @Autowired
     private UserService userService;
 
+    @Transactional
     @GetMapping("")
     public String insuranceList(
-            Model model
+            Model model,
+            Authentication authentication
     ){
-        List<User> users = userService.findAll();
-        List<Insurance> insurances = insuranceService.findAll();
+        Optional<User> user= userService.findByUsername(authentication.getName());
+        if (!user.isPresent()){
+            return "404";
+        }
+        List<Insurance> insurances = insuranceService.findByUser(user.get());
+        model.addAttribute("paymentSchedules", paymentScheduleService.findAll());
+        model.addAttribute("vehicles", vehicleService.findAll());
         model.addAttribute("insurances", insurances);
-        model.addAttribute("users", users);
         model.addAttribute("insurance", new Insurance());
         return "insurance/list";
     }
 
+    @Transactional
     @PostMapping("")
     public String insurancesCreate(
             Model model,
             @Valid Insurance insurance,
-            BindingResult result
+            BindingResult result,
+            Authentication authentication
     ){
+        Optional<User> user= userService.findByUsername(authentication.getName());
+        if (!user.isPresent()){
+            return "404";
+        }
         List<User> users = userService.findAll();
         List<Insurance> insurances = insuranceService.findAll();
-
         result = insuranceService.validateCreation(insurance, result, "create");
         if (result.hasErrors()){
-
-            model.addAttribute("insurances", insurances);
+            model.addAttribute("paymentSchedules", paymentScheduleService.findAll());
+            model.addAttribute("vehicles", vehicleService.findAll());
+            model.addAttribute("insurances", user.get().getInsurances());
             model.addAttribute("users", users);
             model.addAttribute("insurance", insurance);
-            return "insurance/list";
+            return "insurance/form";
         }
+        insuranceService.assignUser(insurance, user.get());
         insuranceService.createInsurance(insurance);
-        return "redirect:/insurance";
+        return "redirect:/";
     }
 
     @GetMapping("/allInsurance")

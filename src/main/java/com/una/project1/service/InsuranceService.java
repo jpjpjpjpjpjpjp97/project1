@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +25,18 @@ public class InsuranceService {
     public Optional<Insurance> findById(Long id){
         return insuranceRepository.findById(id);
     }
+
+    @Transactional
+    public List<Insurance> findByUser(User user){
+        List<Insurance> insurances = this.findAll();
+        List<Insurance> userInsurances = new ArrayList<>();
+        for (Insurance insurance : insurances){
+            if (insurance.getClient().getId() == user.getId()){
+                userInsurances.add(insurance);
+            }
+        }
+        return userInsurances;
+    };
     @Transactional
     public  List<Insurance> findAll() {
         return insuranceRepository.findAll();
