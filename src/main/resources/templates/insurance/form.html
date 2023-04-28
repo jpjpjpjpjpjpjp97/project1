@@ -54,9 +54,11 @@
                         </div>
                         <div>
                             <label for="paymentSchedule" class="form-label col-12 fw-bold my-auto">Payment Method</label>
+
                             <select id="paymentSchedule" name="paymentSchedule" class="form-select d-inline" th:field="*{paymentSchedule}">
                                 <option th:each="paymentSchedule : ${paymentSchedules}" th:value="${paymentSchedule.id}" th:text="${paymentSchedule.name}" th:attr="data-text=${paymentSchedule.name}"></option>
                             </select>
+
                             <ul th:if="${#fields.hasErrors('paymentSchedule')}" class="alert alert-danger mb-0 mt-1 p-1 ps-4">
                                 <li th:each="err : ${#fields.errors('paymentSchedule')}" th:text="${err}" class="error"></li>
                             </ul>
@@ -76,13 +78,14 @@
                                 <li th:each="err : ${#fields.errors('payment')}" th:text="${err}" class="error"></li>
                             </ul>
                         </div>
+                        <!--th:field="*{coverage}" en coverage no se incluyo porque -->
                         <div th:each="coverage : ${coverages}"  >
-                            <input class="form-check-input" type="checkbox" name="coverages" th:field="*{coverages}" th:id="'coverage_'+${coverage.id}" th:value="${coverage.id}"  th:attr="data-name=${coverage.name}, data-minprice=${coverage.minimumPrice}, data-percentage=${coverage.valuationPercentagePrice}" >
+                            <input class="form-check-input" type="checkbox" name="coverages" th:id="'coverage_'+${coverage.id}" th:value="${coverage.id}"  th:attr="data-name=${coverage.name}, data-minprice=${coverage.minimumPrice}, data-percentage=${coverage.valuationPercentagePrice}" >
                             <label class="form-check-label" th:for="'coverage_'+${coverage.id}" th:text="${coverage.name}"> </label>
-                            <ul th:if="${#fields.hasErrors('coverages')}" class="alert alert-danger mb-0 mt-1 p-1 ps-4">
-                                <li th:each="err : ${#fields.errors('coverages')}" th:text="${err}" class="error"></li>
-                            </ul>
                         </div>
+
+
+
                         <div class="row col-12 justify-content-center">
                             <a id="preview_modal" href="#" class="btn btn-lg col-4 btn-primary fw-bold mb-2" data-bs-toggle="modal" data-bs-target="#previewModal" data-bs-dismiss="modal">Preview Insurance</a>
                         </div>

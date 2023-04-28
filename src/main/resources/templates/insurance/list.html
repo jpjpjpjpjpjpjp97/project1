@@ -28,6 +28,7 @@
                     <th scope="col">Valuable</th>
                     <th scope="col">View</th>
                 </tr>
+
                 <tr th:each="insurance : ${insurances}">
                     <td th:text="${insurance.id}">None</td>
                     <th scope="row"><a class="link-secondary"  th:text="${insurance.numberPlate}" th:href="@{/insurance/{numberPlate}(numberPlate = ${insurance.numberPlate})}">None</a></th>
