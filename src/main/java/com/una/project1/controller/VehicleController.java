@@ -72,17 +72,15 @@ public class VehicleController {
                 .body(new InputStreamResource(is));
     }
 
-
-
     @Transactional
     @PreAuthorize("hasAuthority('AdministratorClient')")
     @GetMapping("/{vehicle}")
-    public String coverageVehicle(
+    public String vehicleDetail(
             Model model,
             Authentication authentication,
-            @PathVariable("vehicle") Long coverageId
+            @PathVariable("vehicle") Long vehicleId
     ){
-        Optional<Vehicle> optionaloptionalVehicle = vehicleService.findById(coverageId);
+        Optional<Vehicle> optionaloptionalVehicle = vehicleService.findById(vehicleId);
         if (!optionaloptionalVehicle.isPresent()){
             return "404";
         }
@@ -100,8 +98,9 @@ public class VehicleController {
             Authentication authentication,
             @Valid Vehicle vehicle,
             BindingResult result,
-            @PathVariable("vehicle") Long vehicleId
-    ){
+            @PathVariable("vehicle") Long vehicleId,
+            @RequestParam("image") MultipartFile file
+    ) throws IOException {
         Optional<Vehicle> existingVehicle = vehicleService.findById(vehicleId);
         if (!existingVehicle.isPresent()){
             return "404";
@@ -110,7 +109,7 @@ public class VehicleController {
             model.addAttribute("vehicle", vehicle);
             return "vehicle/detail";
         }
-        vehicleService.save(vehicle);
+        vehicleService.updateVehicle(existingVehicle.get(), vehicle, file);
         return "redirect:/vehicle?update=true";
     }
 
