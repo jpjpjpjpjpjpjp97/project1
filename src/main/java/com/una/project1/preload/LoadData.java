@@ -48,13 +48,26 @@ class LoadData {
             log.info("Loading Users...");
             User user1 = userService.createUser(new User("jdiaz", "Jose","12345", adminRoleSet));
             User user2 = userService.createUser(new User("elopez", "Eliecer","12345", userRoleSet));
+            User user3 = userService.createUser(new User("caar", "Carlos","12345", userRoleSet));
+            User user4 = userService.createUser(new User("jar", "Eduargo","12345", userRoleSet));
+            User user5 = userService.createUser(new User("bra", "Brian","12345", userRoleSet));
             userRepository.save(user1);
             userRepository.save(user2);
+            userRepository.save(user3);
+            userRepository.save(user4);
+            userRepository.save(user5);
             log.info("Loading Payments...");
             Payment payment1 = new Payment("1234123456785678","Jose Diaz", "04/24", "123", "Heredia, Costa Rica", user1);
             Payment payment2 = new Payment("9876543219876543","Eliecer Lopez", "10/24", "456", "New York, United States", user2);
+            Payment payment3 = new Payment("1237863123786233","Carlos Alvarez", "11/26", "652", "Cartago, Costa Rica", user3);
+            Payment payment4 = new Payment("1231231235555434","Jose Alvarez", "13/28", "677", "Managua, Nicaragua ", user4);
+            Payment payment5 = new Payment("1231235471355555","Brian Chaves", "27/26", "420", "Limon City, Costa Rica", user5);
+
             paymentRepository.save(payment1);
             paymentRepository.save(payment2);
+            paymentRepository.save(payment3);
+            paymentRepository.save(payment4);
+            paymentRepository.save(payment5);
             PaymentSchedule quarterlyPayment = new PaymentSchedule("Quarterly");
             PaymentSchedule biannualPayment = new PaymentSchedule("Biannual");
             PaymentSchedule yearlyPayment = new PaymentSchedule("Yearly");
@@ -76,10 +89,12 @@ class LoadData {
             CoverageCategory coverageCategory2 = new CoverageCategory("Civil Responsibility", "Coverages of third-party damage.");
             CoverageCategory coverageCategory3 = new CoverageCategory("Collisions and Overturns", "Collisions against objects on the road or vehicles.");
             CoverageCategory coverageCategory4 = new CoverageCategory("Theft", "Theft of vehicle.");
+            CoverageCategory coverageCategory5 = new CoverageCategory("Personal", "Personal injury protection");
             coverageCategoryRepository.save(coverageCategory1);
             coverageCategoryRepository.save(coverageCategory2);
             coverageCategoryRepository.save(coverageCategory3);
             coverageCategoryRepository.save(coverageCategory4);
+            coverageCategoryRepository.save(coverageCategory5);
             Coverage coverage1 = new Coverage("Fire damage", "Fires started by natural causes.", 40000.0, 3.0, coverageCategory1);
             Coverage coverage2 = new Coverage("Flooding", "Sea or river flooding above wheel level.", 80000.0, 4.0, coverageCategory1);
             Coverage coverage3 = new Coverage("Death or injury of third-party", "Third-party injuries and death related to collisions with drivers or pedestrians.", 100000.0, 10.0, coverageCategory2);
@@ -89,6 +104,7 @@ class LoadData {
             Coverage coverage7 = new Coverage("Car Theft", "Vehicle steal and subsequent damages.", 40000.0, 10.0, coverageCategory4);
             Coverage coverage8 = new Coverage("Car Hijacking", "Hijacking of vehicle while it's being driven or occupied.", 40000.0, 10.0, coverageCategory4);
             Coverage coverage9 = new Coverage("Hurricane", "Damages by impact of objects flying against the car or falling due to high winds or hurricanes.", 30000.0, 5.0, coverageCategory1);
+            Coverage coverage10 = new Coverage("Death", "A death benefit is a payout to the beneficiary of a lifeBeneficiaries must submit proof of death and proof of the deceased’s coverage to the insurer to receive the benefit.", 70000.0, 5.0, coverageCategory5);
             coverageRepository.save(coverage1);
             coverageRepository.save(coverage2);
             coverageRepository.save(coverage3);
@@ -98,10 +114,25 @@ class LoadData {
             coverageRepository.save(coverage7);
             coverageRepository.save(coverage8);
             coverageRepository.save(coverage9);
+            coverageRepository.save(coverage10);
             coverageSet.add(coverage1);
             Date date1 = new Date();
-            Insurance insurance1 = new Insurance("123456", 2011, 15000000, date1, payment2, yearlyPayment, user2, vehicle1, coverageSet);
+            Date date2 = new Date();
+            Date date3 = new Date();
+            Date date4 = new Date();
+            Date date5 = new Date();
+            Insurance insurance1 = new Insurance("123456", 2011, 15000000, date2, payment2, yearlyPayment, user2, vehicle1, coverageSet);
+            Insurance insurance2 = new Insurance("345678", 2022, 10000000, date3, payment3, quarterlyPayment, user3, vehicle2, coverageSet);
+            Insurance insurance3 = new Insurance("789012", 2018, 20000000, date1, payment1, biannualPayment, user1, vehicle3, coverageSet);
+            Insurance insurance4 = new Insurance("123123", 2005, 25000000, date4, payment4, biannualPayment, user4, vehicle4, coverageSet);
+            Insurance insurance5 = new Insurance("7t2713", 2023, 33000000, date5, payment5, biannualPayment, user5, vehicle5, coverageSet);
             insuranceRepository.save(insurance1);
+            insuranceRepository.save(insurance2);
+            insuranceRepository.save(insurance3);
+            insuranceRepository.save(insurance4);
+            insuranceRepository.save(insurance5);
+
+
         };
     }
 }
