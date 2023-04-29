@@ -31,12 +31,15 @@ public class VehicleService {
         return vehicleRepository.findAll();
     }
 
-    public BindingResult validateCreation(Vehicle vehicle, BindingResult result, String type) {
+    public BindingResult validateCreation(Vehicle vehicle, MultipartFile carImage, BindingResult result, String type) {
         //This method will search for a vehicle by its brand and model in the
         // and return an Optional object that may contain the found vehicle or not.
         Optional<Vehicle> optionalVehicle = this.findByBrandAndModel(vehicle.getBrand(), vehicle.getModel());
         if (optionalVehicle.isPresent() && type.equals("create")) {
             result.rejectValue("brand", "error.vehicle", "A vehicle with this brand and model already exists.");
+        }
+        if (carImage.getOriginalFilename() == ""){
+            result.rejectValue("carImage", "error.vehicle", "Image is required.");
         }
         return result;
     }

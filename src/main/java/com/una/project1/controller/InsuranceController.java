@@ -75,10 +75,9 @@ public class InsuranceController {
         if (result.hasErrors()){
             model.addAttribute("paymentSchedules", paymentScheduleService.findAll());
             model.addAttribute("vehicles", vehicleService.findAll());
-            model.addAttribute("payments", paymentService.findAll());
+            model.addAttribute("payments", user.get().getPayments());
             model.addAttribute("coverages", coverageService.findAll());
             model.addAttribute("insurances", insurances);
-            model.addAttribute("users", users);
             model.addAttribute("insurance", insurance);
             model.addAttribute("error", "true");
             return "insurance/list";
@@ -90,7 +89,7 @@ public class InsuranceController {
     }
 
     @PreAuthorize("hasAuthority('StandardClient')")
-    @GetMapping("/deleteInsurance/{id}")
+    @PostMapping("/{id}/delete")
     public String deleteInsurance(Model model, @PathVariable("id") Long id, Authentication authentication) {
         Optional<Insurance> optionalInsurance = insuranceService.findById(id);
         if (!optionalInsurance.isPresent()){
@@ -113,13 +112,18 @@ public class InsuranceController {
             Authentication authentication
     ){
         Optional<Insurance> optionalInsurance = insuranceService.findByNumberPlate(numberPlate);
-        if (!optionalInsurance.isPresent()){
+        Optional<User> user= userService.findByUsername(authentication.getName());
+        if (!optionalInsurance.isPresent() || !user.isPresent()){
             return "404";
         }
         Insurance insurance = optionalInsurance.get();
         if (!(authentication.getName().equals(insurance.getClient().getUsername()))){
             return "403";
         }
+        model.addAttribute("paymentSchedules", paymentScheduleService.findAll());
+        model.addAttribute("vehicles", vehicleService.findAll());
+        model.addAttribute("payments", user.get().getPayments());
+        model.addAttribute("coverages", coverageService.findAll());
         model.addAttribute("insurance",optionalInsurance.get());
         return "insurance/detail";
     }

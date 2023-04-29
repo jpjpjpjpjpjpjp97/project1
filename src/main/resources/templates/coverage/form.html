@@ -13,9 +13,9 @@
     <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form method="post" th:action="@{${coverage.id != null ? '/coverage/'+coverage.id : '/coverage' }}" th:object="${coverage}">
+                <form method="post" th:action="@{${coverage.id != null && coverage.id != 0 ? '/coverage/'+coverage.id : '/coverage' }}" th:object="${coverage}">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="formModalLabel" th:text="@{${coverage.id != null ? 'Update Category' : 'Create Coverage' }}">Modal title</h5>
+                        <h5 class="modal-title" id="formModalLabel" th:text="@{${coverage.id != null  && coverage.id != 0 ? 'Update Category' : 'Create Coverage' }}">Modal title</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -48,28 +48,19 @@
                                 <li th:each="err : ${#fields.errors('valuationPercentagePrice')}" th:text="${err}" class="error"></li>
                             </ul>
                         </div>
-
-                        <!--No se porque no se agrega/ No esta jalando la clase
-
                         <div>
                             <label for="coverageCategory" class="form-label col-12 fw-bold my-auto">Coverage Category</label>
-
                             <select id="coverageCategory" name="coverageCategory" class="form-select d-inline" th:field="*{coverageCategory}">
-                                <option th:each="coverageCategory : ${coverageCategory}" th:value="${coverageCategory.id}" th:text="${coverageCategory.name}" th:attr="data-text=${coverageCategory.name}"></option>
+                                <option th:each="coverageCategory : ${coverageCategories}" th:value="${coverageCategory.id}" th:text="${coverageCategory.name}"></option>
                             </select>
 
                             <ul th:if="${#fields.hasErrors('coverageCategory')}" class="alert alert-danger mb-0 mt-1 p-1 ps-4">
                                 <li th:each="err : ${#fields.errors('coverageCategory')}" th:text="${err}" class="error"></li>
                             </ul>
                         </div>
--->
-
-
-
-
                     </div>
                     <div class="modal-footer">
-                        <input type="submit" class="btn btn-primary" th:value="${coverage.id != null ? 'Update Category' : 'Create Coverage'}">
+                        <input type="submit" class="btn btn-primary" th:value="${coverage.id != null  && coverage.id != 0 ? 'Update Category' : 'Create Coverage'}">
                     </div>
                 </form>
             </div>

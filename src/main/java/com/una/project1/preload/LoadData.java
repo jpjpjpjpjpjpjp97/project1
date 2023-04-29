@@ -63,10 +63,10 @@ class LoadData {
             paymentScheduleRepository.save(yearlyPayment);
             log.info("Loading Vehicles...");
             Vehicle vehicle1 = new Vehicle("Toyota", "Corolla", getStaticImage("src/main/resources/static/images/toyota_corolla_2020.jpg"));
-            Vehicle vehicle2 = new Vehicle(null, "Honda", "Civic");
-            Vehicle vehicle3 = new Vehicle(null, "Ford", "Mustang");
-            Vehicle vehicle4 = new Vehicle(null, "Nissan", "Sentra");
-            Vehicle vehicle5 = new Vehicle(null, "Chevrolet", "Camaro");
+            Vehicle vehicle2 = new Vehicle("Honda", "Civic", getStaticImage("src/main/resources/static/images/honda_civic_2020.jpg"));
+            Vehicle vehicle3 = new Vehicle("Ford", "Mustang", getStaticImage("src/main/resources/static/images/ford_mustang_2020.jpg"));
+            Vehicle vehicle4 = new Vehicle("Nissan", "Sentra", getStaticImage("src/main/resources/static/images/nissan_sentra_2020.jpg"));
+            Vehicle vehicle5 = new Vehicle("Chevrolet", "Camaro", getStaticImage("src/main/resources/static/images/chevrolet_camaro_2020.jpg"));
             vehicleRepository.save(vehicle1);
             vehicleRepository.save(vehicle2);
             vehicleRepository.save(vehicle3);

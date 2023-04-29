@@ -35,6 +35,9 @@
                             <label for="model" class="form-label mb-0 mt-3">Image</label>
                             <hr>
                             <input id="car_image" type="file" th:name="image" accept="image/*"/>
+                            <ul th:if="${#fields.hasErrors('carImage')}" class="alert alert-danger mb-0 mt-1 p-1 ps-4">
+                                <li th:each="err : ${#fields.errors('carImage')}" th:text="${err}" class="error"></li>
+                            </ul>
                         </div>
                         <div class="modal-footer">
                             <input type="submit" class="btn btn-primary" th:value="${vehicle.id != null ? 'Update vehicle' : 'Create Vehicle'}">

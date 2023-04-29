@@ -31,11 +31,12 @@
                 <tbody id="quote_coverages">
                 </tbody>
               </table>
+              <h5>Payment Plan: <span id="quote_payment_schedule_price"></span></h5>
               <h5>Total Price: <span id="quote_total_price"></span></h5>
             </div>
             <div class="row col-12 justify-content-between m-0">
               <a href="#" class="btn btn-secondary col-4 btn-primary fw-bold mb-2" data-bs-toggle="modal" data-bs-target="#formModal" data-bs-dismiss="modal">Go Back</a>
-              <input id="submit_form" type="submit" class="btn btn-primary col-4" value="Add Insurance"/>
+              <input id="submit_form" type="submit" class="btn btn-primary col-4" th:value="${insurance.id != null ? 'Update Insurance' : 'Add Insurance'}"/>
             </div>
           </div>
         </div>

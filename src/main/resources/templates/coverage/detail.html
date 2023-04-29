@@ -18,7 +18,7 @@
 
     <div class="card row col-8 justify-content-center bg-light rounded-0 rounded-bottom rounded-end shadow-sm p-3 m-0">
         <div class="card-title mt-2">
-            <h4 class="text-center">Coverages Details</h4>
+            <h4 class="text-center">Coverage Details</h4>
 
         </div>
         <div class="card-body row col-12 justify-content-center">
@@ -27,13 +27,7 @@
                 <p>Description: <span th:text="${coverage.description}">None</span></p>
                 <p>Minimun Price: <span th:text="${coverage.minimumPrice}">None</span></p>
                 <p>Percentage Price: <span th:text="${coverage.valuationPercentagePrice}">None</span></p>
-
-                <p>Coverages Category:</p>
-                <!--No me funciona jalar los datos
-                <ul>
-                    <li th:each="coverageCategory: ${coverageCategories.id}" th:text="${coverageCategory.name}"></li>
-                </ul>
-                -->
+                <p>Category: <span th:text="${coverage.coverageCategory.name}"></span></p>
             </div>
             <button type="button" class="btn btn-primary col-4 m-3" data-bs-toggle="modal" data-bs-target="#formModal">
                 Update

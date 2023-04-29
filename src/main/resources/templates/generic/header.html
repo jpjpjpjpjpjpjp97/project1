@@ -41,15 +41,6 @@
                                 <a class="nav-link" th:href="@{/vehicle}">Vehicles</a>
                             </li>
                         </span>
-                        <span sec:authorize="hasAuthority('AdministratorClient')">
-                            <li class="nav-item">
-                                <a class="nav-link" th:href="@{/coverage/category}">Categories</a>
-                            </li>
-                        </span> <span sec:authorize="hasAuthority('AdministratorClient')">
-                            <li class="nav-item">
-                                <a class="nav-link" th:href="@{/coverage}">Coverage</a>
-                            </li>
-                        </span>
                     </ul>
                 </div>
             </div>

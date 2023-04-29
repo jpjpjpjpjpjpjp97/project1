@@ -48,7 +48,7 @@ public class VehicleController {
             @RequestParam("image") MultipartFile file
     ) throws IOException {
         List<Vehicle> vehicles = vehicleService.findAll();
-        result = vehicleService.validateCreation(vehicle, result, "create");
+        result = vehicleService.validateCreation(vehicle, file, result, "create");
         if (result.hasErrors()){
             model.addAttribute("vehicles", vehicles);
             model.addAttribute("vehicle", vehicle);

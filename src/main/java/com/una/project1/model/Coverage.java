@@ -45,16 +45,6 @@ public class Coverage {
         this.valuationPercentagePrice = valuationPercentagePrice;
         this.coverageCategory = coverageCategory;
     }
-    public Coverage(long id, String name, String description, Double minimumPrice, Double valuationPercentagePrice, CoverageCategory coverageCategory) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.minimumPrice = minimumPrice;
-        this.valuationPercentagePrice = valuationPercentagePrice;
-        this.coverageCategory = coverageCategory;
-    }
-
-
 
     public long getId() {
         return id;
@@ -110,5 +100,28 @@ public class Coverage {
 
     public void setInsurances(Set<Insurance> insurances) {
         this.insurances = insurances;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Coverage coverage)) return false;
+        return getId() == coverage.getId() && getName().equals(coverage.getName()) && Objects.equals(getDescription(), coverage.getDescription()) && getMinimumPrice().equals(coverage.getMinimumPrice()) && getValuationPercentagePrice().equals(coverage.getValuationPercentagePrice());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getDescription(), getMinimumPrice(), getValuationPercentagePrice());
+    }
+
+    @Override
+    public String toString() {
+        return "Coverage{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", minimumPrice=" + minimumPrice +
+                ", valuationPercentagePrice=" + valuationPercentagePrice +
+                '}';
     }
 }

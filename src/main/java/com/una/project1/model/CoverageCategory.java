@@ -15,20 +15,16 @@ public class CoverageCategory {
     private Long id;
     @NotBlank(message = "Brand cannot be empty.")
     private String name;
-
-    public Set<Coverage> getCoverages() {
-        return coverages;
-    }
-
-    public void setCoverages(Set<Coverage> coverages) {
-        this.coverages = coverages;
-    }
-
     @NotBlank(message = "Model cannot be empty.")
     private String description;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "coverageCategory", cascade = CascadeType.REMOVE)
     private Set<Coverage> coverages = new HashSet<>();
+
+
+    public CoverageCategory() {
+
+    }
 
     public CoverageCategory(Long id, String name, String description) {
         this.id = id;
@@ -39,10 +35,6 @@ public class CoverageCategory {
     public CoverageCategory(String name, String description) {
         this.name = name;
         this.description = description;
-    }
-
-    public CoverageCategory() {
-
     }
 
     public Long getId() {
@@ -67,6 +59,15 @@ public class CoverageCategory {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+
+    public Set<Coverage> getCoverages() {
+        return coverages;
+    }
+
+    public void setCoverages(Set<Coverage> coverages) {
+        this.coverages = coverages;
     }
 
     @Override
