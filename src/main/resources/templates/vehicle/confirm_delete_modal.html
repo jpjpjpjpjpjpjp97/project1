@@ -18,7 +18,7 @@
                     <div class="text-danger text-center fw-bold p-1 mb-0 mt-3">*If there are insurances related to the vehicle, the vehicle will not be deleted until the insurances are deleted first.</div>
                 </div>
                 <div class="modal-footer">
-                    <form th:method="Post" th:action="@{/vehicle/delete/{vehicle}(vehicle = ${vehicle.id})}">
+                    <form th:method="Post" th:action="@{/vehicle/{vehicle}/delete(vehicle = ${vehicle.id})}">
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </div>
