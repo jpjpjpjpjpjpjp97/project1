@@ -67,9 +67,6 @@ public class Insurance {
         this.client = client;
         this.vehicle = vehicle;
     }
-
-    // Year es una palabra reservada
-
     public Insurance(String numberPlate, int carYear, int valuation, Date startDate, Payment payment, PaymentSchedule paymentSchedule, User client, Vehicle vehicle, Set<Coverage> coverages) {
         this.numberPlate = numberPlate;
         this.carYear = carYear;

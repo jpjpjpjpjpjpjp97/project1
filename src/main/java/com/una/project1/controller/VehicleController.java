@@ -63,7 +63,6 @@ public class VehicleController {
         return "redirect:/vehicle";
     }
 
-    @PreAuthorize("hasAuthority('AdministratorClient')")
     @GetMapping("/image/{id}")
     public ResponseEntity<InputStreamResource> showVehicleImage(@PathVariable String id) {
         InputStream is = new ByteArrayInputStream(vehicleService.getImage(Long.valueOf(id)));

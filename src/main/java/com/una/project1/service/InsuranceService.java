@@ -80,8 +80,14 @@ public class InsuranceService {
     }
 
 
-
-
-
-
+    public void updateInsurance(Insurance existingInsurance, Insurance insuranceData) {
+        existingInsurance.setNumberPlate(insuranceData.getNumberPlate());
+        existingInsurance.setCarYear(insuranceData.getCarYear());
+        existingInsurance.setValuation(insuranceData.getValuation());
+        existingInsurance.setPayment(insuranceData.getPayment());
+        existingInsurance.setPaymentSchedule(insuranceData.getPaymentSchedule());
+        existingInsurance.setVehicle(insuranceData.getVehicle());
+        existingInsurance.setCoverages(insuranceData.getCoverages());
+        insuranceRepository.save(existingInsurance);
+    }
 }

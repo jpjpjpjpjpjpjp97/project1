@@ -13,7 +13,7 @@
     <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form id="insurance_form" method="post" th:action="@{${insurance.id != null ? '/insurance/'+insurance.id : '/insurance'}}" th:object="${insurance}" class="row col-12 justify-content-center m-0">
+                <form id="insurance_form" method="post" th:action="@{${insurance.id != null ? '/insurance/'+insurance.numberPlate : '/insurance'}}" th:object="${insurance}" class="row col-12 justify-content-center m-0">
                     <div class="modal-header">
                         <h5 class="modal-title" id="formModalLabel" th:text="@{${insurance.id != null ? 'Update Insurance' : 'Create Insurance' }}">Modal title</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
