@@ -1,8 +1,11 @@
 package com.una.project1.controller;
 
+import com.una.project1.model.Coverage;
+import com.una.project1.model.Insurance;
 import com.una.project1.model.Vehicle;
 import com.una.project1.service.VehicleService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,7 +32,7 @@ import java.util.Optional;
 public class VehicleController {
     @Autowired
     private VehicleService vehicleService;
-
+    @Transactional
     @PreAuthorize("hasAuthority('AdministratorClient')")
     @GetMapping("")
     public String vehicleList(
@@ -39,6 +43,7 @@ public class VehicleController {
         model.addAttribute("vehicle", new Vehicle());
         return "vehicle/list";
     }
+    @Transactional
     @PreAuthorize("hasAuthority('AdministratorClient')")
     @PostMapping("")
     public String createVehicle(
@@ -57,6 +62,8 @@ public class VehicleController {
         vehicleService.createVehicle(vehicle, file);
         return "redirect:/vehicle";
     }
+
+    @PreAuthorize("hasAuthority('AdministratorClient')")
     @GetMapping("/image/{id}")
     public ResponseEntity<InputStreamResource> showVehicleImage(@PathVariable String id) {
         InputStream is = new ByteArrayInputStream(vehicleService.getImage(Long.valueOf(id)));
@@ -64,27 +71,64 @@ public class VehicleController {
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(new InputStreamResource(is));
     }
-    @GetMapping("/allVehicles")
-    public String showAllVehicles(Model model) {
-        List<Vehicle> vehicles = vehicleService.findAll();
-        model.addAttribute("vehicles", vehicles);
-        return "vehicle/allVehicles";
-    }
-    @GetMapping("/deleteVehicle/{id}")
-    public String deleteVehicle(Model model, @PathVariable("id") Long id) {
-        Optional<Vehicle> optionalVehicle = vehicleService.findById(id);
-        if (optionalVehicle.isPresent()) {
-            Vehicle vehicle = optionalVehicle.get();
-            vehicleService.deleteVehicle(vehicle);
+
+
+
+    @Transactional
+    @PreAuthorize("hasAuthority('AdministratorClient')")
+    @GetMapping("/{vehicle}")
+    public String coverageVehicle(
+            Model model,
+            Authentication authentication,
+            @PathVariable("vehicle") Long coverageId
+    ){
+        Optional<Vehicle> optionaloptionalVehicle = vehicleService.findById(coverageId);
+        if (!optionaloptionalVehicle.isPresent()){
+            return "404";
         }
-        return "redirect:/vehicle";
+        Vehicle vehicle = optionaloptionalVehicle.get();
+        model.addAttribute("vehicles", vehicleService.findAll());
+        model.addAttribute("vehicle",vehicle);
+        return "vehicle/detail";
     }
 
+    @Transactional
+    @PreAuthorize("hasAuthority('AdministratorClient')")
+    @PostMapping("/{vehicle}")
+    public String vehicleModify(
+            Model model,
+            Authentication authentication,
+            @Valid Vehicle vehicle,
+            BindingResult result,
+            @PathVariable("vehicle") Long vehicleId
+    ){
+        Optional<Vehicle> existingVehicle = vehicleService.findById(vehicleId);
+        if (!existingVehicle.isPresent()){
+            return "404";
+        }
+        if (result.hasErrors()){
+            model.addAttribute("vehicle", vehicle);
+            return "vehicle/detail";
+        }
+        vehicleService.save(vehicle);
+        return "redirect:/vehicle?update=true";
+    }
 
-
-
-
-
+    @Transactional
+    @PostMapping("/{vehicle}/delete")
+    public String vehicleDelete(
+            Model model,
+            @PathVariable("vehicle") Long coverageId,
+            Authentication authentication
+    ){
+        Optional<Vehicle> optionalvehicle = vehicleService.findById(coverageId);
+        if (!optionalvehicle.isPresent()){
+            return "404";
+        }
+        Vehicle vehicle = optionalvehicle.get();
+        vehicleService.deleteById(vehicle.getId());
+        return "redirect:/vehicle?delete=true";
+    }
 
 
 }
