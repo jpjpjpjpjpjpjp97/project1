@@ -31,7 +31,7 @@
                     <td>
                         <img th:if="${vehicle.carImage != null}" th:src="@{'/vehicle/image/' + ${vehicle.id}}" alt="" style="width: 100px;" />
                     </td>
-                    <th scope="row"><a class="link-secondary" th:href="@{/vehicle/{vehicleId}/detail(vehicleId=${vehicle.id})}">View Details</a></th>
+                    <th scope="row"><a class="link-secondary" th:href="@{/vehicle/{vehicle}(vehicle = ${vehicle.id})}">View Details</a></th>
                 </tr>
             </table>
         </div>
