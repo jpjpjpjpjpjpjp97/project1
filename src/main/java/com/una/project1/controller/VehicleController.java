@@ -3,6 +3,7 @@ package com.una.project1.controller;
 import com.una.project1.model.Coverage;
 import com.una.project1.model.Insurance;
 import com.una.project1.model.Vehicle;
+import com.una.project1.service.InsuranceService;
 import com.una.project1.service.VehicleService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
@@ -32,6 +33,8 @@ import java.util.Optional;
 public class VehicleController {
     @Autowired
     private VehicleService vehicleService;
+    @Autowired
+    private InsuranceService insuranceService;
     @Transactional
     @PreAuthorize("hasAuthority('AdministratorClient')")
     @GetMapping("")
@@ -113,6 +116,7 @@ public class VehicleController {
     }
 
     @Transactional
+    @PreAuthorize("hasAuthority('AdministratorClient')")
     @PostMapping("/{vehicle}/delete")
     public String vehicleDelete(
             Model model,
@@ -120,15 +124,19 @@ public class VehicleController {
             Authentication authentication
     ){
         Optional<Vehicle> optionalvehicle = vehicleService.findById(coverageId);
+        List<Insurance> insurances = insuranceService.findAll();
         if (!optionalvehicle.isPresent()){
             return "404";
+        }
+        for (Insurance insurance : insurances){
+            if (insurance.getVehicle().equals(optionalvehicle.get())){
+                return "403";
+            }
         }
         Vehicle vehicle = optionalvehicle.get();
         vehicleService.deleteById(vehicle.getId());
         return "redirect:/vehicle?delete=true";
     }
-
-
 }
 
 

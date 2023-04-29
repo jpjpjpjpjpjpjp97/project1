@@ -141,6 +141,9 @@ public class InsuranceController {
         if (!user.isPresent() || !existingInsurance.isPresent()){
             return "404";
         }
+        if (!(authentication.getName().equals(insurance.getClient().getUsername()))){
+            return "403";
+        }
         if (result.hasErrors()){
             model.addAttribute("paymentSchedules", paymentScheduleService.findAll());
             model.addAttribute("vehicles", vehicleService.findAll());
